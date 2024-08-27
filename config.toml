@@ -1,0 +1,66 @@
+### In toml you can comment stuff, therefore you can store prompts/ make prompt template.
+### You can easily comment a line on cursor using VS Code by pressing [Ctrl + /] 
+### but NEVER DELETE or ADD entry/ variable, this will break the program.
+###
+### To run the program, in your terminal, navigate to folder that contain the .py script, 
+### then (ignoring backtick), invoke:
+### `python hf_api.py` (to use API method), OR
+### `python hf_selenium.py` (to use Selenium method)
+###
+### For Selenium method you can be logged-in or not logged in.
+##### For logged-in profile: You are required to have Firefox installed and logged into HuggingFace.
+##### For non-logged-in profile: Must have have Firefox installed.
+##### Both mode requires to do additional setup regrading file associates with WebP.
+##### Please visit (selenium_setup.md) for more info and tutorial.
+
+
+[profile]  
+# location to your root directory of your firefox (AND ONLY FIREFOX) profile. 
+# where is root directory? Pls go to about:profile in firefox to get your root directory path.
+profile = [
+  
+  [true, "path\\to\\firefox\\profile"],
+  [true, "path\\to\\firefox\\profile"],
+  [false, "path\\to\\firefox\\profile"]
+  
+  ] 
+# first parameter is indicating if your profile is logged in to huggingface. Only accepting boolean (true | false)
+# second parameter is your path to your firefox profile
+# you can remove or add any entry if you like, as long as you follow the criterion above.
+
+
+
+[model] # User don't have to adjust this section unless you know what you doing.
+model_name = "black-forest-labs/FLUX.1-dev"
+inference = 25
+
+
+[generation]
+prompt = ""  # any prompt that you like
+generation_count = 1
+image_dimension = "768x1024"  # Portrait 4 by 3 higher res
+# image_dimension = "1024x768"  # Landscape 4 by 3 higher res
+# image_dimension = "600x800"  # Portrait 4 by 3 lower res
+# image_dimension = "800x600"  # Landscape 4 by 3 lower res
+# image_dimension MUST FOLLOW FORMAT widthxheight (example: "800x600") (with quotes).
+# feel free to uncomment which to use, or write custom value.
+
+
+[file_management]
+savedir = "path\\to\\saved\\location"
+open_folder_after_execution = true   # true | false
+# TAKE NOTE: Only accepting absolute path (example: C:\\Users\\user).
+#            If you are on Windows, you are required to put double back slashes.  
+#            and at the end do not put any slashes, it will cause error. 
+
+
+
+[developer]
+proxy_finding_version = 1
+# "proxy_finding_version = 0" is using this computer ip
+# "proxy_finding_version = 1" is using custom ip checking, recommended
+# "proxy_finding_version = 2" is using FreeProxy python module, less reliable
+# as their ip is kinda same
+
+# utk hf_api, image dah didownloadkn ke local pc
+# utk hf_selenium, kita pakai requests utk download

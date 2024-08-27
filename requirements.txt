@@ -1,0 +1,14 @@
+pywin32
+fal_client
+requests
+colorama
+gradio_client
+pillow
+send2trash
+pysocks
+selenium
+webdriver-manager
+free-proxy
+pyside6
+pytz
+pymediainfo
