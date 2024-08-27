@@ -1,6 +1,7 @@
 import tomllib
 import json
 from datetime import datetime
+from os.path import exists
 from colorama import Fore, Style
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
@@ -68,8 +69,17 @@ def config_data():
 
 ### load toml config file once, then use the data indefinitely
 ### add _dev for dev
-with open("config_dev.toml", "rb") as f:
+config_dev = "config_dev.toml"
+if not exists(config_dev):
+  config_file = "config.toml"
+else:
+  print(MAGENTA,"DEV CONFIG FILE FOUND. YOU ARE NOW A DEVELOPER.",RESET)
+  config_file = config_dev
+
+
+with open(config_file, "rb") as f:
   data = tomllib.load(f)
+
 
 
 if __name__ == '__main__':
