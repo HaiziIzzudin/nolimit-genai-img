@@ -94,7 +94,7 @@ elif version == 1:
         except:
           write_to_output('connection_testing_end', now())
           write_to_output('connection_testing_status', 'failed', True)
-          print(MAGENTA,"We're having some problems connecting with the proxy. Retrying with other proxy...",RESET)
+          # print(MAGENTA,"We're having some problems connecting with the proxy. Retrying with other proxy...",RESET)
 
       if response.status_code == 200: ## OK
         ip_connected_to = json.loads(response.text)
@@ -105,7 +105,7 @@ elif version == 1:
       else:
         write_to_output('connection_testing_end', now())
         write_to_output('connection_testing_status', 'failed', True)
-        print(YELLOW, "Proxy unresponsive. Changing proxy...", RESET)
+        # print(YELLOW, "Proxy unresponsive. Changing proxy...", RESET)
 
     if mode == 'selenium':
       socks.set_default_proxy()
