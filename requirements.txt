@@ -12,3 +12,4 @@ free-proxy
 pyside6
 pytz
 pymediainfo
+# raintext

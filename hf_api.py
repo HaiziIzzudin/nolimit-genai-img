@@ -3,12 +3,16 @@ from change_proxy import getNewIP
 from img_postprocessing_logging import img_postprocessing_logging, open_folder
 from unlimited_ai_img import config_data, write_to_output, now
 cf = config_data()
+from hf_token_api import hf_token
 
 # from test import full_prompt
 from gradio_client import Client
 from colorama import just_fix_windows_console
 just_fix_windows_console()
 from colorama import Fore, Style
+RESET = Style.RESET_ALL
+GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
+import io
 
 
 
@@ -35,7 +39,7 @@ def newIP_and_load_hf_model(hf_model:str):
 
 
 def run_inference(client, loop_number:int, inference_steps:int):
-  print(Fore.LIGHTMAGENTA_EX, f"\nRun #{loop_number}.\nFree compute yields longer results. Please be patient...", Style.RESET_ALL)
+  print(Fore.LIGHTMAGENTA_EX, f"Run #{loop_number}.\nFree compute yields longer results. Please be patient...", Style.RESET_ALL)
   try:
     write_to_output('prompt', cf['prompt'])
     write_to_output('randomized_seed', True)
@@ -86,29 +90,52 @@ def run_inference(client, loop_number:int, inference_steps:int):
 ### MAIN ###
 ############
 
-print(f"Proxy finding version: {cf['proxy_finder_ver']}\n")
+if __name__ == '__main__':
 
-print('Prompt:\n', cf['prompt'])
+  print(f"Proxy finding version: {cf['proxy_finder_ver']}\n")
+  print('Prompt:\n', cf['prompt'])
 
-client = newIP_and_load_hf_model(cf['model_name'])
+  # TODO: logic to use hf_token first, if all fails, then use proxy 
 
-i = 0
-while i < cf['gen_count']:
-  imgpath = run_inference(client, i+1, cf['inference_count'])
+  for i in range(cf['gen_count']):
+    
+    try:
+      print(MAGENTA,f'Generating image #{i+1}...',RESET)
+      token_list = cf['tokens']
+      for j in range(len(token_list)):
+        try:
+          content = hf_token(
+            token_list[j],
+            cf['model_name'],
+            cf['prompt'],
+            cf['width'], cf['height'],
+            cf['inference_count']
+          )
+          break
+        except:
+          print(YELLOW,f'Token #{j+1} exhausted. Using next token...',RESET)
+      img_postprocessing_logging(
+        io.BytesIO(content),
+        cf['savepath'],
+        return_renamed(), True
+      )
+    
+    except:
+      print(YELLOW,f'Exhausted all user tokens. Fallback to anonymous user...',RESET)
+      client = newIP_and_load_hf_model(cf['model_name'])
+      imgpath = run_inference(client, i+1, cf['inference_count'])
 
-  if imgpath['generation bool'] == False:
-    print(imgpath['path/message'])  ## NOTICE: changing server
-    client = newIP_and_load_hf_model(cf['model_name'])
-    # no increment here bcos it still failed to 
-    # generate current photo index, therefore loop again
-  
-  else:
-    # giving a name
-    newfn_noext: str = return_renamed()
-    # postprocess photo
-    img_postprocessing_logging(imgpath['path/message'], cf['savepath'], newfn_noext)
-    i += 1
+      while not imgpath['generation bool']: # gen bool => false => not => true
+        print(imgpath['path/message'])  ## MESSAGE: changing server
+        client = newIP_and_load_hf_model(cf['model_name'])
+        imgpath = run_inference(client, i+1, cf['inference_count'])
+      else: # gen bool => true => not => false
+        img_postprocessing_logging(
+          imgpath['path/message'], 
+          cf['savepath'], 
+          return_renamed()
+        )
 
 
-# invoke opening folder if true
-if cf['opendir_on_finish']:   open_folder(cf['savepath'])
+  # invoke opening folder if true
+  if cf['opendir_on_finish']:   open_folder(cf['savepath'])

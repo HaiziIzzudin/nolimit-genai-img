@@ -11,4 +11,4 @@
 
 Do this for every profiles that you want to use.
 
-[Go back to main tutorial](https://github.com/HaiziIzzudin/un-limitd-gen-ai-images)
+[Go back to main tutorial](README.md)

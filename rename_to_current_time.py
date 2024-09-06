@@ -5,20 +5,13 @@ from colorama import Fore, Style
 from datetime import datetime
 
 def return_renamed():
-  
-  # while True:
-    
-    # try:
-      
+  """
+  Return a string representing the current datetime, in the format:
+  `FLUX_<year><month><day>_<hour><minute><second>`
+
+  This string is used as a filename for the generated image.
+  """
+
   now = datetime.now()
   now_str: str = now.strftime('FLUX_%Y%m%d_%H%M%S')
   return now_str
-      
-      # os.rename(oldfilename, now_str)
-      # print(Fore.GREEN + 'Renaming '+ oldfilename + ' to new filename ' + newfilename + ' completed successfully.' + Style.RESET_ALL)
-      # break
-    
-    # except FileExistsError:
-    #   print(Fore.LIGHTMAGENTA_EX + 'File '+ newfilename + ' already exists.' + Style.RESET_ALL, end=' ')
-    #   newfilename = fixFileExists(newfilename)
-    #   print(Fore.LIGHTMAGENTA_EX + 'Increment by 1 to ' + newfilename)

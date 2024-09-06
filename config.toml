@@ -29,6 +29,12 @@ profile = [
 # you can remove or add any entry if you like, as long as you follow the criterion above.
 
 
+[token]
+token = [
+  "hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+] # replace this string with your own HF token.
+# Please refer https://huggingface.co/settings/tokens for more information
+
 
 [model] # User don't have to adjust this section unless you know what you doing.
 model_name = "black-forest-labs/FLUX.1-dev"

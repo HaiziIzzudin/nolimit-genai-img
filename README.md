@@ -47,13 +47,14 @@ pip install -r requirements.txt
 8. Edit config.toml file included in the repository. **Please follow the instructions written in config.toml or script will fail!**.
 9. Run inference. There are two modes that you can run, (a) _API Mode_, and (b) _WebDriver Mode_:
 
-   a. API Mode (faster, but inference may fail and prone to API blocking)
+   a. API Mode (faster, but inference may fail and prone to API blocking)<br>
+   [Please Read This before begin API Mode](api_setup.md)
    ```bash
    python ./hf_api.py
    ```
       
    b. WebDriver Mode (slower, but more reliable and can interact even if script is quit unexpectedly)<br>
-   [Please Read This before Begin WebDriver Mode](https://github.com/HaiziIzzudin/un-limitd-gen-ai-images/blob/main/selenium_setup.md)
+   [Please Read This before begin WebDriver Mode](selenium_setup.md)
     
    ```bash
    python ./hf_selenium.py
@@ -66,7 +67,9 @@ pip install -r requirements.txt
 
 .
 ### Method that makes this work
-We uses the HuggingFace (HF) inference API, which is publicly available and accessible through Gradio or Selenium. The catch is that it's a free service, which means there are limits to how much you can use it. To get around these limits, we use a proxy. This method works pretty well, but it's not perfect. Sometimes it can take a while to get results, especially if a lot of people are using it at the same time and HF starts rate-limiting the proxies. And if HF goes down or decides to shut off their API, our script will stop working. We'll keep an eye on things and update our method if we need to. Sometimes, it's just easier to pay for a service, and we're actually working on a paid image generation method that we think will be a good value. We'll let you know when it's ready.
+We uses the HuggingFace (HF) inference API, which is publicly available and accessible through Gradio, Warm Inference API or Selenium. The catch is that it's a free service, which means there are limits to how much you can use it. To get around these limits, we use a proxy. This method works pretty well, but it's not perfect. Sometimes it can take a while to get results, especially if a lot of people are using it at the same time and HF starts rate-limiting the proxies. And if HF goes down or decides to shut off their API, our script will stop working. We'll keep an eye on things and update our method if we need to.<br>
+***It is recommended to provide your own HF token, since that is also has free generation.***<br>
+Sometimes, it's just easier to pay for a service, and we're actually working on a paid image generation method that we think will be a good value. We'll let you know when it's ready.
 
 One important thing to keep in mind, **don't even think about using this method to offer paid services**. That's **NOT ALLOWED** and is basically reselling something that's supposed to be free.
 

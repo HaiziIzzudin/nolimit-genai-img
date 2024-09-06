@@ -37,6 +37,7 @@ def config_data():
   Returns:
     A dictionary containing the extracted configuration data with the following keys:
       'profile_path' list[str] 
+      'tokens' list[str]
       'model_name' (str)
       'inference_count' (int) 
       'prompt' (str)
@@ -53,6 +54,7 @@ def config_data():
 
     return {
       'profiles': data['profile']['profile'],  # this one return array of an array of boolean, and firefox profile path
+      'tokens': data['token']['token'], # return array of hf token
       'model_name': data['model']['model_name'],
       'inference_count': data['model']['inference'],
       'prompt': data['generation']['prompt'],

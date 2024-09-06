@@ -21,17 +21,18 @@ def open_folder(filename):
 def img_postprocessing_logging(
     old_filepath_url:str, 
     savedir: str, 
-    new_filename_no_ext:str
+    new_filename_no_ext:str,
+    if_token:bool=False
     ):
   
   # convert image to jpg
   while True:
     try:
-      os.path.exists(old_filepath_url)
+      if not if_token:  os.path.exists(old_filepath_url)
       image = Image.open(old_filepath_url)
       break
     except:
-      print(MAGENTA, "Image download not completed yet. Retrying...", RESET)
+      print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
       
   image = image.convert('RGB')
   image.save(f"{savedir}\\{new_filename_no_ext}.jpg")
@@ -39,7 +40,7 @@ def img_postprocessing_logging(
   
   # send2trash old webp image
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
-  send2trash( convert2raw(old_filepath_url) )
+  if not if_token:  send2trash( convert2raw(old_filepath_url) )
 
   # add exif date to image based on
   add_exifdate_to_img(f"{savedir}\\{new_filename_no_ext}.jpg")
