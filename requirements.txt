@@ -1,4 +1,3 @@
-pywin32
 fal_client
 requests
 colorama
@@ -9,9 +8,10 @@ pysocks
 selenium
 webdriver-manager
 free-proxy
-pyside6
 pytz
 pymediainfo
 fastapi
 fastapi[all]
 uvicorn
+pyside6
+pywin32
