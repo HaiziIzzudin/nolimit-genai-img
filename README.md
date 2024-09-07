@@ -30,15 +30,15 @@ cd un-limitd-gen-ai-images
 ```
 5. Create python virtual environment
 ```bash
-python -m venv gen-ai
+python -m venv venv
 ```
 6. Launch python virtual environment
 ```bash
-./gen-ai/Scripts/activate
+./venv/Scripts/activate
 ```
 ```bash
 # There should be an indication that you are currently in a venv. Example:
-# (gen-ai) $
+# (venv) $
 ```
 7. Install all required module for this script
 ```bash
