@@ -94,6 +94,7 @@ class master():
     """
     try:
       token_list = cf['tokens']
+      print(token_list)
       for j in range(len(token_list)):
         try:
           content = hf_token(
@@ -105,8 +106,7 @@ class master():
           )
           break
         except Exception as e:
-          print(RED,e,RESET)
-          print(YELLOW,f'Token #{j+1} exhausted. Using next token...',RESET)
+          print(YELLOW,e,"\n",f'Token #{j+1} exhausted. Using next token...',RESET)
       self.newname = return_renamed()
       img_postprocessing_logging(
         io.BytesIO(content),
@@ -114,8 +114,8 @@ class master():
         self.newname, True
       )
     
-    except:
-      print(YELLOW,f'Exhausted all user tokens. Fallback to anonymous user...',RESET)
+    except Exception as e:
+      print(YELLOW,e,"\n",f'Exhausted all user tokens. Fallback to anonymous user...',RESET)
       client = newIP_and_load_hf_model(cf['model_name'])
       imgpath = run_inference(client, i+1, cf['inference_count'])
 
