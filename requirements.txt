@@ -11,6 +11,7 @@ free-proxy
 pytz
 pymediainfo
 fastapi
+fastapi-cli
 fastapi[all]
 uvicorn
 pyside6
