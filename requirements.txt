@@ -12,5 +12,6 @@ free-proxy
 pyside6
 pytz
 pymediainfo
-# raintext
-# nicegui
+fastapi
+fastapi[all]
+uvicorn

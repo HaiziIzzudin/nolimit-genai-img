@@ -77,47 +77,40 @@ def run_inference(client, loop_number:int, inference_steps:int):
       }
 
 
+class master():
+  def run(self, model_name:str, prompt:str, width:int, height:int, inference_count:int):
+    """
+    Runner function for generating images using HuggingFace's API.
 
+    Parameters:
+        model_name (str): Model name to use for image generation.
+        prompt (str): Prompt for image generation.
+        width (int): Width of the output image.
+        height (int): Height of the output image.
+        inference_count (int): Number of times to run the model with the given prompt.
 
-
-
-
-
-
-
-
-############
-### MAIN ###
-############
-
-if __name__ == '__main__':
-
-  print(f"Proxy finding version: {cf['proxy_finder_ver']}\n")
-  print('Prompt:\n', cf['prompt'])
-
-  # TODO: logic to use hf_token first, if all fails, then use proxy 
-
-  for i in range(cf['gen_count']):
-    
+    Returns:
+        None
+    """
     try:
-      print(MAGENTA,f'Generating image #{i+1}...',RESET)
       token_list = cf['tokens']
       for j in range(len(token_list)):
         try:
           content = hf_token(
             token_list[j],
-            cf['model_name'],
-            cf['prompt'],
-            cf['width'], cf['height'],
-            cf['inference_count']
+            model_name,
+            prompt,
+            width, height,
+            inference_count
           )
           break
         except:
           print(YELLOW,f'Token #{j+1} exhausted. Using next token...',RESET)
+      self.newname = return_renamed()
       img_postprocessing_logging(
         io.BytesIO(content),
         cf['savepath'],
-        return_renamed(), True
+        self.newname, True
       )
     
     except:
@@ -130,12 +123,50 @@ if __name__ == '__main__':
         client = newIP_and_load_hf_model(cf['model_name'])
         imgpath = run_inference(client, i+1, cf['inference_count'])
       else: # gen bool => true => not => false
+        self.newname = return_renamed()
         img_postprocessing_logging(
           imgpath['path/message'], 
           cf['savepath'], 
-          return_renamed()
+          self.newname
         )
+  
+  def return_for_api(self):
+    with open(f"{cf['savepath']}/{self.newname}.jpg", 'rb') as f:   return f.read()
+  def return_for_local(self):
+    return
 
 
+
+
+
+
+
+########################
+### FINAL STAGE HERE ###
+########################
+
+
+mtr = master()
+
+def hf_api_fastapi(prompt):
+  print(MAGENTA,f'FASTAPI: Generating image...',RESET)
+  mtr.run(
+    'black-forest-labs/FLUX.1-dev',
+    prompt,
+    768, 1024, 20
+  )
+  return mtr.return_for_api() # this return image binary
+
+if __name__ == '__main__':
+  print(f"Proxy finding version: {cf['proxy_finder_ver']}\n")
+  print('Prompt:\n', cf['prompt'])
+  for i in range(cf['gen_count']):
+    print(MAGENTA,f'LOCAL: Generating image #{i+1}...',RESET)
+    mtr.run(
+      cf['model_name'],
+      cf['prompt'],
+      cf['width'], cf['height'],
+      cf['inference_count'],
+    )
   # invoke opening folder if true
   if cf['opendir_on_finish']:   open_folder(cf['savepath'])
