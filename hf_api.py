@@ -104,7 +104,8 @@ class master():
             inference_count
           )
           break
-        except:
+        except Exception as e:
+          print(RED,e,RESET)
           print(YELLOW,f'Token #{j+1} exhausted. Using next token...',RESET)
       self.newname = return_renamed()
       img_postprocessing_logging(

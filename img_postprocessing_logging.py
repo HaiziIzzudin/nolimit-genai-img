@@ -17,6 +17,9 @@ def open_folder(filename):
     subprocess.call([opener, filename])
 
 
+slash = "\\" if sys.platform == "win32" else "/"
+
+
 def img_postprocessing_logging(
     old_filepath_url:str, 
     savedir: str, 
@@ -34,15 +37,15 @@ def img_postprocessing_logging(
       print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
       
   image = image.convert('RGB')
-  image.save(f"{savedir}\\{new_filename_no_ext}.jpg")
-  write_to_output('img_new_filepath', f"{savedir}\\{new_filename_no_ext}.jpg")
+  image.save(f"{savedir}{slash}{new_filename_no_ext}.jpg")
+  write_to_output('img_new_filepath', f"{savedir}{slash}{new_filename_no_ext}.jpg")
   
   # send2trash old webp image
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
   if not if_token:  send2trash( convert2raw(old_filepath_url) )
 
   # add exif date to image based on
-  add_exifdate_to_img(f"{savedir}\\{new_filename_no_ext}.jpg")
+  add_exifdate_to_img(f"{savedir}{slash}{new_filename_no_ext}.jpg")
 
 
 
