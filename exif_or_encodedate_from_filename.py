@@ -55,7 +55,10 @@ def add_exifdate_to_img(filename):
     datetime_obj = getImageDate(filename)
 
     ## change EXIF trio dates
-    command = f'{exiftool_location}{slash}exiftool -AllDates="{datetime_obj}" -overwrite_original "{filename}"'
+    command = [f'{exiftool_location}{slash}exiftool', 
+               f'-AllDates="{datetime_obj}"',
+               f'-overwrite_original',
+               f'"{filename}"']
     ### YES WINDOWS TERMINAL CAN ONLY INTERPRET DOUBLE QUOTE AS ENCLOSING FOR ANY ARGUMENT PASS THAT HAS SPACES!
     print(command)
     subprocess.run(command)
