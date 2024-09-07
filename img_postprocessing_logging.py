@@ -45,7 +45,7 @@ def img_postprocessing_logging(
   if not if_token:  send2trash( convert2raw(old_filepath_url) )
 
   # add exif date to image based on
-  add_exifdate_to_img(f"{savedir}{slash}{new_filename_no_ext}.jpg")
+  add_exifdate_to_img(f".{slash}{savedir}{slash}{new_filename_no_ext}.jpg")
 
 
 

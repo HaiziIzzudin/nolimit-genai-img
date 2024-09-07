@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from time import sleep
 import platform
-
+import sys
 from colorama import just_fix_windows_console
 just_fix_windows_console()
 from colorama import Fore, Style
@@ -13,8 +13,9 @@ if platform.system() == 'Windows':
   import pywintypes
 
 
+slash = "\\" if sys.platform == "win32" else "/"
 
-exiftool_location = r"C:\Program Files\XnViewMP\AddOn"
+exiftool_location = r"C:\Program Files\XnViewMP\AddOn" # /root/Image-ExifTool-12.96
 mediatype = 'images' ### IMAGES / VIDEOS
 
 
@@ -54,7 +55,7 @@ def add_exifdate_to_img(filename):
     datetime_obj = getImageDate(filename)
 
     ## change EXIF trio dates
-    command = f'{exiftool_location}\\exiftool -AllDates="{datetime_obj}" -overwrite_original "{filename}"'
+    command = f'{exiftool_location}{slash}exiftool -AllDates="{datetime_obj}" -overwrite_original "{filename}"'
     ### YES WINDOWS TERMINAL CAN ONLY INTERPRET DOUBLE QUOTE AS ENCLOSING FOR ANY ARGUMENT PASS THAT HAS SPACES!
     print(command)
     subprocess.run(command)
@@ -86,7 +87,7 @@ def add_exifdate_to_img(filename):
 
   except Exception:
     print(Fore.RED + 'An error has occured. Please check the exception below for error.')
-    print(Fore.RED + Exception)
+    print(Fore.RED + str(Exception))
     print(Style.RESET_ALL)
     exit(1)
 
