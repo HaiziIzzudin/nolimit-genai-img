@@ -7,14 +7,14 @@ That is what this repo/ script is aimed to do.
 1. Install [python version 3.11.9](https://www.python.org/downloads/release/python-3119/) and latest [git](https://git-scm.com/downloads) in your computer.
 2. Launch terminal and test your installed python and git version.
 ```bash
-$ python -V
+python -V
 ```
 ```bash
 # the output should be
 # Python 3.11.9
 ```
 ```bash
-$ git -v
+git -v
 ```
 ```bash
 # the output should be
@@ -22,27 +22,31 @@ $ git -v
 ```
 3. Git clone this repository
 ```bash
-git clone https://github.com/HaiziIzzudin/un-limitd-gen-ai-images.git
+git clone https://github.com/HaiziIzzudin/nolimit-genai-img.git
 ```
 4. Change your working directory to cloned repository
 ```bash
-cd un-limitd-gen-ai-images
+cd nolimit-genai-img
 ```
 5. Create python virtual environment
 ```bash
-python -m venv gen-ai
+python -m venv venv
 ```
 6. Launch python virtual environment
 ```bash
-./gen-ai/Scripts/activate
+./venv/Scripts/activate
 ```
 ```bash
 # There should be an indication that you are currently in a venv. Example:
-# (gen-ai) $
+# (venv) $
 ```
 7. Install all required module for this script
 ```bash
 pip install -r requirements.txt
+```
+```bash
+# some fastapi components may failed to install. PLease install it manually:
+pip install fastapi "fastapi[all]" fastapi-cli
 ```
 8. Edit config.toml file included in the repository. **Please follow the instructions written in config.toml or script will fail!**.
 9. Run inference. There are two modes that you can run, (a) _API Mode_, and (b) _WebDriver Mode_:
