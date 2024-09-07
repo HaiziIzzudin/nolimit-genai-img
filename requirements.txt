@@ -13,3 +13,4 @@ pyside6
 pytz
 pymediainfo
 # raintext
+# nicegui

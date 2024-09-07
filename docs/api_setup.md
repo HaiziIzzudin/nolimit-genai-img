@@ -1,6 +1,6 @@
 ### If you decided to use API method, there is no setup if you decided to use this with no token or account.
 
-[Go back to main tutorial](README.md)
+[Go back to main tutorial](../README.md)
 
 ### But if you have HF account, we recommend adding your own token to your config file.
 
@@ -20,4 +20,4 @@ token = [
 
 ***TIP:*** This is an array, therefore feel free to add as many **token per account** as you like.
 
-[Go back to main tutorial](README.md)
+[Go back to main tutorial](../README.md)

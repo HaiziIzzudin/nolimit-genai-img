@@ -48,13 +48,13 @@ pip install -r requirements.txt
 9. Run inference. There are two modes that you can run, (a) _API Mode_, and (b) _WebDriver Mode_:
 
    a. API Mode (faster, but inference may fail and prone to API blocking)<br>
-   [Please Read This before begin API Mode](api_setup.md)
+   [Please Read This before begin API Mode](docs/api_setup.md)
    ```bash
    python ./hf_api.py
    ```
       
    b. WebDriver Mode (slower, but more reliable and can interact even if script is quit unexpectedly)<br>
-   [Please Read This before begin WebDriver Mode](selenium_setup.md)
+   [Please Read This before begin WebDriver Mode](docs/selenium_setup.md)
     
    ```bash
    python ./hf_selenium.py

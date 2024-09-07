@@ -39,7 +39,7 @@ def hf_token(hf_token:str, model:str, prompt:str, width:int, height:int, inferen
     "parameters": {
       "width": width,
       "height": height,
-      "seed": randint(1000000, 9999999)
+      "seed": randint(100_000_000, 999_999_999)
     },
     "options": {
       "inference_count": inference_count
