@@ -2,7 +2,6 @@ from PIL import Image
 from send2trash import send2trash
 from exif_or_encodedate_from_filename import add_exifdate_to_img
 import os, sys, subprocess
-from filesIngest import filesIngest
 from raw import convert2raw
 from unlimited_ai_img import now, write_to_output
 from colorama import Fore, Style
@@ -51,6 +50,7 @@ def main():
   import tomli
   from rename_to_current_time import return_renamed
   from time import sleep
+  from filesIngest import filesIngest
 
   rr = filesIngest()
   rr.select_files('images') ## IMAGES or VIDEOS valid

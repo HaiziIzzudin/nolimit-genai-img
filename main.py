@@ -43,6 +43,7 @@ async def generate(prompt_request: PromptRequest):
     return Response(content=f"{base64.b64encode(image_binary).decode('utf-8')}", media_type="text/html")
 
 
-# uvicorn main:app --reload
+# uvicorn main:app --reload (run this many times until no error emerges, then run fastapi run main.py)
 # pip freeze > requirements.txt
-# pip install "fastapi[standard]" colorama pysocks requests free-proxy tomli pillow send2trash pyside6
+# pip install "fastapi[standard]" colorama pysocks requests free-proxy tomli pillow send2trash pytz pymediainfo gradio_client
+# please comment out line 83 of file img_postprocessing_logging.py to avoid errors
