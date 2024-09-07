@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from colorama import Fore, Style
-from tomllib import load
+from tomli import load
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 
@@ -42,3 +42,4 @@ async def generate(prompt_request: PromptRequest):
 
 
 # uvicorn main:app --reload
+# pip freeze > requirements.txt

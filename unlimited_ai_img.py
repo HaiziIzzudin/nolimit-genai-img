@@ -1,4 +1,4 @@
-import tomllib
+import tomli as tomllib
 import json
 from datetime import datetime
 from os.path import exists
