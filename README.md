@@ -4,7 +4,8 @@ That is what this repo/ script is aimed to do.
 ### How to run this script?
 #### For first timer, starts from step 1
 #### Otherwise for past users, start from step 6
-1. Install [python version 3.11.9](https://www.python.org/downloads/release/python-3119/) and latest [git](https://git-scm.com/downloads) in your computer.
+1. Install [python version 3.11.9](https://www.python.org/downloads/release/python-3119/) and latest [git](https://git-scm.com/downloads) in your computer.<br>
+***Also has been tested on Python 3.11.7 and 3.9.2***
 2. Launch terminal and test your installed python and git version.
 ```bash
 python -V

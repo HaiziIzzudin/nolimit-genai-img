@@ -43,3 +43,4 @@ async def generate(prompt_request: PromptRequest):
 
 # uvicorn main:app --reload
 # pip freeze > requirements.txt
+# pip install colorama pysocks requests free-proxy tomli pillow send2trash pywin32

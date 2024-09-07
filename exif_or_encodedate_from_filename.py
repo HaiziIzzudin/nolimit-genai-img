@@ -8,8 +8,9 @@ from colorama import just_fix_windows_console
 just_fix_windows_console()
 from colorama import Fore, Style
 
-import win32file
-import pywintypes
+if platform.system() == 'Windows':
+  import win32file
+  import pywintypes
 
 
 
