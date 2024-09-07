@@ -44,6 +44,10 @@ python -m venv venv
 ```bash
 pip install -r requirements.txt
 ```
+```bash
+# some fastapi components may failed to install. PLease install it manually:
+pip install fastapi "fastapi[all]" fastapi-cli
+```
 8. Edit config.toml file included in the repository. **Please follow the instructions written in config.toml or script will fail!**.
 9. Run inference. There are two modes that you can run, (a) _API Mode_, and (b) _WebDriver Mode_:
 
