@@ -47,12 +47,8 @@ def img_postprocessing_logging(
 
 
 
-
-
-# run this code if runned directly,
-# this will not run if this script is imported as module
-if __name__ == "__main__":
-  import tomllib
+def main():
+  import tomli
   from rename_to_current_time import return_renamed
   from time import sleep
 
@@ -61,7 +57,7 @@ if __name__ == "__main__":
   
   ### load toml config file
   with open("config_dev.toml", "rb") as f:
-    data = tomllib.load(f)
+    data = tomli.load(f)
 
   ## assign toml parsed data as variable
   savepath:str     = data['file_management']['savedir']
@@ -79,3 +75,9 @@ if __name__ == "__main__":
   
   # invoke opening folder if true
   if opendir_bool:   open_folder(savepath)
+
+
+
+# run this code if runned directly,
+# this will not run if this script is imported as module
+if __name__ == "__main__":  main()

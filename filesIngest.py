@@ -1,6 +1,6 @@
 from raw import convert2raw
+# from tempdata import signal
 
-from PySide6.QtWidgets import ( QApplication, QFileDialog, QWidget, QVBoxLayout, QTextEdit, )
 import os
 from datetime import datetime
 import pytz
@@ -9,9 +9,11 @@ from pymediainfo import MediaInfo
 import subprocess
 
 
-app = QApplication([]) # QApplication must be initialized before QWidget
 exiftool_location = r"C:\Program Files\XnViewMP\AddOn"
 
+# if signal() != False:
+from PySide6.QtWidgets import ( QApplication, QFileDialog )
+app = QApplication([]) # QApplication must be initialized before QWidget
 
 class filesIngest:
   def select_files(self, kind: str):

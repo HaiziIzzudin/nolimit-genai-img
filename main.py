@@ -9,6 +9,8 @@ from tomli import load
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 
+
+    
 app = FastAPI()
 
 with open("config_dev.toml", "rb") as f:
@@ -43,4 +45,4 @@ async def generate(prompt_request: PromptRequest):
 
 # uvicorn main:app --reload
 # pip freeze > requirements.txt
-# pip install colorama pysocks requests free-proxy tomli pillow send2trash pywin32
+# pip install "fastapi[standard]" colorama pysocks requests free-proxy tomli pillow send2trash pyside6
