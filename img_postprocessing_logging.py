@@ -37,6 +37,7 @@ def img_postprocessing_logging(
       print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
       
   image = image.convert('RGB')
+  if not os.path.exists(savedir):  os.makedirs(savedir)
   image.save(f"{savedir}{slash}{new_filename_no_ext}.jpg")
   write_to_output('img_new_filepath', f"{savedir}{slash}{new_filename_no_ext}.jpg")
   

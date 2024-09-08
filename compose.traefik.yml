@@ -1,0 +1,32 @@
+services:
+
+  traefik:
+    image: traefik:v2.3
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-public-certificates:/certificates
+    command:
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.http.address=:80  # Rename to http
+      - --entrypoints.https.address=:443  # Rename to https
+      - --certificatesresolvers.le.acme.email=mhiar02@gmail.com
+      - --certificatesresolvers.le.acme.storage=/certificates/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --entrypoints.http.http.redirections.entrypoint.to=https  # Adjust this
+      - --entrypoints.http.http.redirections.entrypoint.scheme=https  # Adjust this
+      - --accesslog
+      - --log
+    networks:
+      - traefik-public
+
+volumes:
+  traefik-public-certificates:
+
+networks:
+  traefik-public:
+    external: true

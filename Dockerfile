@@ -2,6 +2,8 @@ FROM tiangolo/uvicorn-gunicorn:python3.9
 
 COPY ./nolimit-genai-img /app/
 
+RUN mkdir /app/output
+
 RUN wget https://exiftool.org/Image-ExifTool-12.96.tar.gz
 RUN tar -zxvf Image-ExifTool-12.96.tar.gz
 
