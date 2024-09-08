@@ -15,7 +15,7 @@ if platform.system() == 'Windows':
 
 slash = "\\" if sys.platform == "win32" else "/"
 
-exiftool_location = r"C:\Program Files\XnViewMP\AddOn" # /root/Image-ExifTool-12.96
+exiftool_location = r"C:\Program Files\XnViewMP\AddOn" # "/root/Image-ExifTool-12.96"
 mediatype = 'images' ### IMAGES / VIDEOS
 
 

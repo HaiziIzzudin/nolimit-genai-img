@@ -20,7 +20,7 @@ with open("config_dev.toml", "rb") as f:
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=data['developer']['cors_allow_origin_url'],  # Allows all origins
+    allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
@@ -55,4 +55,5 @@ async def generate(prompt_request: PromptRequest):
 # then run fastapi run main.py)
 # pip freeze > requirements.txt
 # pip install "fastapi[standard]" colorama pysocks requests free-proxy tomli pillow send2trash pytz pymediainfo gradio_client
+# (if you are on windows) pip install pywin32
 # please comment out line 83 of file img_postprocessing_logging.py to avoid errors
