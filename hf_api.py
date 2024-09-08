@@ -132,7 +132,11 @@ class master():
         )
   
   def return_for_api(self):
-    with open(f"{cf['savepath']}/{self.newname}.jpg", 'rb') as f:   return f.read()
+    with open(f"{cf['savepath']}/{self.newname}.jpg", 'rb') as f:   
+      return {
+        'filename': f'{self.newname}.jpg',
+        'data': f.read()
+      }
   def return_for_local(self):
     return
 

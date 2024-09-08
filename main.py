@@ -39,8 +39,14 @@ class PromptRequest(BaseModel): # this is for json body
 async def generate(prompt_request: PromptRequest):
     prompt = prompt_request.prompt
     print(MAGENTA,prompt,RESET)
-    image_binary = hf_api_fastapi(prompt)
-    return Response(content=f"{base64.b64encode(image_binary).decode('utf-8')}", media_type="text/html")
+    returned_data = hf_api_fastapi(prompt)
+    filename = returned_data['filename']
+    image_binary = returned_data['data']
+    return Response(
+        content=f"{base64.b64encode(image_binary).decode('utf-8')}", 
+        media_type="text/html", 
+        headers={"Content-Disposition": f"{filename}"}
+    )
 
 
 # uvicorn main:app --reload (run this many times until no error emerges, 
