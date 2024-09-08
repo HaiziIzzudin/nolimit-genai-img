@@ -13,10 +13,6 @@ GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGEN
     
 app = FastAPI()
 
-with open("config_dev.toml", "rb") as f:
-    data = load(f)
-    print(data['developer']['cors_allow_origin_url'])
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,6 +44,9 @@ async def generate(prompt_request: PromptRequest):
         headers={"Content-Disposition": f"{filename}"}
     )
 
+
+# pls follow tutorial from https://medium.com/@m.adel.abdelhady/deploying-fastapi-app-over-https-with-traefik-a-quick-step-by-step-guide-d440e87d8f44 to deploy with HTTPS
+# before run docker compose up -d, add HF token to config.toml file
 
 # uvicorn main:app --reload (run this many times until no error emerges, 
 # make new directory named output in the same folder as git cloned,
