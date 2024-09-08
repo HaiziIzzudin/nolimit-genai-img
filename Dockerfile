@@ -9,6 +9,9 @@ RUN pip install "fastapi[standard]" colorama pysocks requests free-proxy tomli p
 
 COPY ./app /code/app
 
+RUN wget https://exiftool.org/Image-ExifTool-12.96.tar.gz
+RUN tar -zxvf Image-ExifTool-12.96.tar.gz
+
 RUN mkdir /code/app/output
 
 CMD ["fastapi", "run", "app/main.py", "--proxy-headers", "--port", "80"]

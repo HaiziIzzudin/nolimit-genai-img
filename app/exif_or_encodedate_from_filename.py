@@ -18,7 +18,7 @@ if sys.platform == "win32":
   exiftool_location = r"C:\Program Files\XnViewMP\AddOn" # "/root/Image-ExifTool-12.96"
 else:
   slash = '/'
-  exiftool_location = "/app/Image-ExifTool-12.96"
+  exiftool_location = "/code/Image-ExifTool-12.96"
 
 
 mediatype = 'images' ### IMAGES / VIDEOS
