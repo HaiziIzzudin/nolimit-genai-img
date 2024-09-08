@@ -47,6 +47,7 @@ async def generate(prompt_request: PromptRequest):
 
 # pls follow tutorial from https://medium.com/@m.adel.abdelhady/deploying-fastapi-app-over-https-with-traefik-a-quick-step-by-step-guide-d440e87d8f44 to deploy with HTTPS
 # before run docker compose up -d, add HF token to config.toml file, and
+# cp nolimit-genai-img/Dockerfile ./
 
 
 # uvicorn main:app --reload (run this many times until no error emerges, 
