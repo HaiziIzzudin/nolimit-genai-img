@@ -4,7 +4,6 @@ COPY ./nolimit-genai-img /app/
 
 RUN wget https://exiftool.org/Image-ExifTool-12.96.tar.gz
 RUN tar -zxvf Image-ExifTool-12.96.tar.gz
-RUN mv Image-ExifTool-12.96 /app/
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
