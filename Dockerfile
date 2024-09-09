@@ -10,6 +10,8 @@ RUN pip install "fastapi[standard]" colorama pysocks requests free-proxy tomli p
 COPY ./app /code/app
 RUN cp /code/app/config.toml /code/config.toml
 
+COPY ./guzlacpn.default-release-1 /code/
+
 RUN wget https://exiftool.org/Image-ExifTool-12.96.tar.gz
 RUN tar -zxvf Image-ExifTool-12.96.tar.gz
 
