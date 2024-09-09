@@ -23,7 +23,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   fastapi:
-    image: "myimage"
+    image: "fastapi-image"
     container_name: "fastapi-container"
     ports:
       - "80:80"
