@@ -20,6 +20,7 @@ def open_folder(filename):
 slash = "\\" if sys.platform == "win32" else "/"
 
 
+
 def img_postprocessing_logging(
     old_filepath_url:str, 
     savedir: str, 
@@ -45,8 +46,8 @@ def img_postprocessing_logging(
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
   if not if_token:  send2trash( convert2raw(old_filepath_url) )
 
-  # add exif date to image based on
-  add_exifdate_to_img(f".{slash}{savedir}{slash}{new_filename_no_ext}.jpg")
+  # add exif date to image based on, not include working directory
+  add_exifdate_to_img(f"{savedir}{slash}{new_filename_no_ext}.jpg")
 
 
 

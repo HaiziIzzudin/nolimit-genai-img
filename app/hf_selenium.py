@@ -4,10 +4,10 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
-import re
 from selenium.webdriver.common.proxy import Proxy
 from selenium.webdriver.common.proxy import ProxyType
+from time import sleep
+import re
 from os.path import exists as file_exists
 from colorama import Fore, Style
 RESET = Style.RESET_ALL

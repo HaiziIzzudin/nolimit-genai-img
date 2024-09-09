@@ -15,12 +15,13 @@ if platform.system() == 'Windows':
 
 if sys.platform == "win32":
   slash = "\\"
-  exiftool_location = r"C:\Program Files\XnViewMP\AddOn" # "/root/Image-ExifTool-12.96"
+  exiftool_location = "C:\\Program Files\\XnViewMP\\AddOn\\exiftool" # "/root/Image-ExifTool-12.96"
 else:
   slash = '/'
-  exiftool_location = "/code/Image-ExifTool-12.96"
+  exiftool_location = "/code/Image-ExifTool-12.96/exiftool"
 
 
+pwd = os.getcwd()
 mediatype = 'images' ### IMAGES / VIDEOS
 
 
@@ -60,13 +61,10 @@ def add_exifdate_to_img(filename):
     datetime_obj = getImageDate(filename)
 
     ## change EXIF trio dates
-    command = [f'{exiftool_location}{slash}exiftool', 
-               f'-AllDates="{datetime_obj}"',
-               f'-overwrite_original',
-               f'"{filename}"']
+    command = f'"{exiftool_location}" -AllDates="{datetime_obj}" -overwrite_original "{pwd}{slash}{filename}"'
     ### YES WINDOWS TERMINAL CAN ONLY INTERPRET DOUBLE QUOTE AS ENCLOSING FOR ANY ARGUMENT PASS THAT HAS SPACES!
     print(command)
-    subprocess.run(command)
+    subprocess.run(command, shell=True) # WINDOWS: command cannot be separated into a list, and must imclude shell=True
     
 
 
@@ -77,13 +75,13 @@ def add_exifdate_to_img(filename):
       # Convert timestamp to Windows file time
       wintime = pywintypes.Time(timestamp)
       winfile = win32file.CreateFile(
-        filename, win32file.GENERIC_WRITE, win32file.FILE_SHARE_WRITE, None, win32file.OPEN_EXISTING, 0, 0
+        f'{pwd}{slash}{filename}', win32file.GENERIC_WRITE, win32file.FILE_SHARE_WRITE, None, win32file.OPEN_EXISTING, 0, 0
       )
       win32file.SetFileTime(winfile, wintime, wintime, wintime)
       winfile.close()
     else:
       # Set access and modification times (creation time not modifiable on Unix-like systems)
-      os.utime(filename, (timestamp, timestamp))
+      os.utime(f'{pwd}{slash}{filename}', (timestamp, timestamp))
     
     
     ## print success statement
@@ -93,9 +91,9 @@ def add_exifdate_to_img(filename):
 
 
 
-  except Exception:
+  except Exception as e:
     print(Fore.RED + 'An error has occured. Please check the exception below for error.')
-    print(Fore.RED + str(Exception))
+    print(Fore.RED + e)
     print(Style.RESET_ALL)
     exit(1)
 

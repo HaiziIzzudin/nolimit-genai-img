@@ -54,6 +54,7 @@ def config_data():
 
     return {
       'profiles': data['profile']['profile'],  # this one return array of an array of boolean, and firefox profile path
+      'profiles_only': [i[1] for i in data['profile']['profile'] if i[0]],  # return list of only path to profile
       'tokens': data['token']['token'], # return array of hf token
       'model_name': data['model']['model_name'],
       'inference_count': data['model']['inference'],
