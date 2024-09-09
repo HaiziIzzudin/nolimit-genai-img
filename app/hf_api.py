@@ -1,3 +1,4 @@
+import base64
 from rename_to_current_time import return_renamed
 from change_proxy import getNewIP
 from img_postprocessing_logging import img_postprocessing_logging, open_folder
@@ -132,11 +133,13 @@ class master():
         )
   
   def return_for_api(self):
+    image_base64_list:list[str] = []
     with open(f"{cf['savepath']}/{self.newname}.jpg", 'rb') as f:   
-      return {
-        'filename': f'{self.newname}.jpg',
-        'data': f.read()
-      }
+      image_base64 = base64.b64encode(f.read()).decode('utf-8')
+      image_base64_list.append(image_base64)
+    return image_base64_list
+    
+  
   def return_for_local(self):
     return
 
@@ -160,7 +163,8 @@ def hf_api_fastapi(prompt):
     prompt,
     768, 1024, 20
   )
-  return mtr.return_for_api() # this return image binary
+  data = mtr.return_for_api()
+  return data, len(data) # this return image base64
 
 if __name__ == '__main__':
   print(f"Proxy finding version: {cf['proxy_finder_ver']}\n")
