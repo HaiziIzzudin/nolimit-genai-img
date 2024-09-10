@@ -73,6 +73,9 @@ async def generate(prompt_request:PromptRequest):
         "image_base64": image_base64,  # you already returned base64 
         "total": total
       }), 
+    headers={
+      "Access-Control-Allow-Origin": "https://imagen.ai.iziizz.com"
+    }, 
     media_type="application/json", 
   )
   # maknanya logic utk nk display gambar 1 ke, 2 ke, 3 ke, dsbgnya, logic tu nanti implement dkt javascript.

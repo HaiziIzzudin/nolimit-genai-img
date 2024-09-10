@@ -48,6 +48,7 @@ def profile_launch_and_login(headless:bool=False):
   print(GREEN,"Firefox download dir:",f"{pwd}{slash}{cf['savepath']}",RESET)
   # fetch profile path
   path_to_profile:list[str] = cf['profiles_only']
+  print(GREEN,"Firefox profile path:",path_to_profile,RESET)
 
   # select 1st profile
   path_to_profile = path_to_profile[0]
