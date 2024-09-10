@@ -93,41 +93,44 @@ class main():
     print(GREEN,'Profile launched and logged in',RESET)
   
   def run(self, prompt:str):
-    driver = self.driver
-    actions = self.actions
-    # insert prompt
-    element = get_element(driver, xpath()['textbox-prompt'])
-    actions.move_to_element(element).click().perform()
-    # Send each character with a small delay
-    for char in prompt:
-      actions.send_keys(char).perform()
-      sleep(0.05)
-    # click run
-    element = get_element(driver, xpath()['run'])
-    element.click()
-    print(GREEN,'Prompt inserted and run button clicked',RESET)
+    try:
+      driver = self.driver
+      actions = self.actions
+      # insert prompt
+      element = get_element(driver, xpath()['textbox-prompt'])
+      actions.move_to_element(element).click().perform()
+      # Send each character with a small delay
+      for char in prompt:
+        actions.send_keys(char).perform()
+        sleep(0.05)
+      # click run
+      element = get_element(driver, xpath()['run'])
+      element.click()
+      print(GREEN,'Prompt inserted and run button clicked',RESET)
 
-    # init list to store image names, and wait for infer to finish
-    self.image_list:list[str] = []
-    countdown("Waiting for infer to done in", 30)
+      # init list to store image names, and wait for infer to finish
+      self.image_list:list[str] = []
+      countdown("Waiting for infer to done in", 30)
 
-    # fetch the photo download btn
-    for i in range(4):
-      element = get_element(driver, xpath(i+1)["image-dlbtn"])
-      if element != False: # if there is an element
-        element.click()
-        while True: # loop to check if the image is generated
-          check = os.path.exists(f"{cf['savepath']}{slash}image_fx_.jpg")
-          if check == True:
-            sleep(2)
-            newname_noext = return_renamed()
-            img_postprocessing_logging(f"{pwd}{slash}{cf['savepath']}{slash}image_fx_.jpg", cf['savepath'], newname_noext)
-            self.image_list.append(f"{pwd}{slash}{cf['savepath']}{slash}{newname_noext}.jpg")
-            break
-          else:  sleep(0.5)
-      else:  print(RED,f"Image #{i+1} no image generated",RESET)
-
-    driver.close()
+      # fetch the photo download btn
+      for i in range(4):
+        element = get_element(driver, xpath(i+1)["image-dlbtn"])
+        if element != False: # if there is an element
+          element.click()
+          while True: # loop to check if the image is generated
+            check = os.path.exists(f"{cf['savepath']}{slash}image_fx_.jpg")
+            if check == True:
+              sleep(2)
+              newname_noext = return_renamed()
+              img_postprocessing_logging(f"{pwd}{slash}{cf['savepath']}{slash}image_fx_.jpg", cf['savepath'], newname_noext)
+              self.image_list.append(f"{pwd}{slash}{cf['savepath']}{slash}{newname_noext}.jpg")
+              break
+            else:  sleep(0.5)
+        else:  print(RED,f"Image #{i+1} no image generated",RESET)
+      driver.close()
+    except Exception as e:  # unexpected error need to close driver
+      print(RED,e,RESET)
+      driver.close()
 
 
   def return_base64(self):
