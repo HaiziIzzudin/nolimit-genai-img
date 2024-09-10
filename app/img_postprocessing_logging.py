@@ -1,3 +1,4 @@
+from time import sleep
 from PIL import Image
 from send2trash import send2trash
 from exif_or_encodedate_from_filename import add_exifdate_to_img
@@ -36,6 +37,7 @@ def img_postprocessing_logging(
       break
     except:
       print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
+      sleep(2)
       
   image = image.convert('RGB')
   if not os.path.exists(savedir):  os.makedirs(savedir)

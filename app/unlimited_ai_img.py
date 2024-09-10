@@ -1,3 +1,5 @@
+import os
+import sys
 import tomli as tomllib
 import json
 from datetime import datetime
@@ -72,10 +74,15 @@ def config_data():
 
 ### load toml config file once, then use the data indefinitely
 ### add _dev for dev
-config_dev = "/code/app/config_dev.toml"
-if not exists(config_dev):
-  config_file = "/code/app/config.toml"
+
+if sys.platform == "win32":
+  config_dev = "app/config_dev.toml"
+  config_file = "app/config.toml"
 else:
+  config_dev = "/code/app/config_dev.toml"
+  config_file = "/code/app/config.toml"
+
+if exists(config_dev): 
   print(MAGENTA,"DEV CONFIG FILE FOUND. YOU ARE NOW A DEVELOPER.",RESET)
   config_file = config_dev
 
