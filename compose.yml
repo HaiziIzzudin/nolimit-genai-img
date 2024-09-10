@@ -29,6 +29,7 @@ services:
       - "80:80"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fastapi.rule=Host(`fastapi.imagegen.iziizz.com`)"  # change to your domain
+      - "traefik.http.routers.fastapi.rule=Host(` <your-domain-name> `)"  # change to your domain
+      # if using linode, follow your domain rdns (in network tab)
       - "traefik.http.routers.fastapi.entrypoints=websecure"
       - "traefik.http.routers.fastapi.tls.certresolver=myresolver"

@@ -153,7 +153,7 @@ def return_for_api(prompt:str):  # for fastapi
 
 if __name__ == "__main__":
   mainprogram = main()
-  mainprogram.init_driver(headless=False)
+  mainprogram.init_driver(headless=True)
   mainprogram.run(cf['prompt'])
   
   # invoke opening folder if true
