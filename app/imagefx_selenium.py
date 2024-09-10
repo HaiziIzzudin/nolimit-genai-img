@@ -21,7 +21,9 @@ from img_postprocessing_logging import img_postprocessing_logging, open_folder
 from unlimited_ai_img import config_data, write_to_output, now
 from countdown import countdown
 cf = config_data()
+
 slash = "\\" if platform == "win32" else "/"
+
 pwd = os.getcwd()
 
 # xpath to interact with the website

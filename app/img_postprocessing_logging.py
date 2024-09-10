@@ -44,7 +44,7 @@ def img_postprocessing_logging(
   
   # send2trash old webp image
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
-  if not if_token:  send2trash( convert2raw(old_filepath_url) )
+  if not if_token:  send2trash( old_filepath_url )
 
   # add exif date to image based on, not include working directory
   add_exifdate_to_img(f"{savedir}{slash}{new_filename_no_ext}.jpg")
