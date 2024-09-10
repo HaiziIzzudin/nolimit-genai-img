@@ -121,8 +121,8 @@ class main():
           if check == True:
             sleep(2)
             newname_noext = return_renamed()
-            img_postprocessing_logging(f"{cf['savepath']}{slash}image_fx_.jpg", cf['savepath'], newname_noext)
-            self.image_list.append(f"{cf['savepath']}{slash}{newname_noext}.jpg")
+            img_postprocessing_logging(f"{pwd}{slash}{cf['savepath']}{slash}image_fx_.jpg", cf['savepath'], newname_noext)
+            self.image_list.append(f"{pwd}{slash}{cf['savepath']}{slash}{newname_noext}.jpg")
             break
           else:  sleep(0.5)
       else:  print(RED,f"Image #{i+1} no image generated",RESET)
