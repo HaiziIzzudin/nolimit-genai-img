@@ -23,7 +23,6 @@ from countdown import countdown
 cf = config_data()
 slash = "\\" if platform == "win32" else "/"
 pwd = os.getcwd()
-print(GREEN,"pwd:",pwd,RESET)
 
 # xpath to interact with the website
 # xpath: dict[str, str] = {
@@ -43,6 +42,8 @@ def xpath(count:int=1):
 
 def profile_launch_and_login(headless:bool=False):
   
+  print(GREEN,"pwd:",pwd,RESET)
+  print(GREEN,"Firefox download dir:",f"{pwd}{slash}{cf['savepath']}",RESET)
   # fetch profile path
   path_to_profile:list[str] = cf['profiles_only']
 
@@ -160,7 +161,7 @@ def return_for_api(prompt:str):  # for fastapi
 
 if __name__ == "__main__":
   mainprogram = main()
-  mainprogram.init_driver(headless=True)
+  mainprogram.init_driver(headless=False)
   mainprogram.run(cf['prompt'])
   
   # invoke opening folder if true
