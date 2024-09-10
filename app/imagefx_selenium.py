@@ -23,6 +23,7 @@ from countdown import countdown
 cf = config_data()
 slash = "\\" if platform == "win32" else "/"
 pwd = os.getcwd()
+print(GREEN,"pwd:",pwd,RESET)
 
 # xpath to interact with the website
 # xpath: dict[str, str] = {
@@ -99,14 +100,16 @@ class main():
       # insert prompt
       element = get_element(driver, xpath()['textbox-prompt'])
       actions.move_to_element(element).click().perform()
+      print(GREEN,'Inserting Prompt',RESET)
       # Send each character with a small delay
       for char in prompt:
         actions.send_keys(char).perform()
         sleep(0.05)
+      print(GREEN,'Prompt inserted',RESET)
       # click run
       element = get_element(driver, xpath()['run'])
       element.click()
-      print(GREEN,'Prompt inserted and run button clicked',RESET)
+      print(GREEN,'run button clicked',RESET)
 
       # init list to store image names, and wait for infer to finish
       self.image_list:list[str] = []
@@ -131,6 +134,7 @@ class main():
     except Exception as e:  # unexpected error need to close driver
       print(RED,e,RESET)
       driver.close()
+      exit(1)
 
 
   def return_base64(self):
