@@ -72,9 +72,9 @@ def config_data():
 
 ### load toml config file once, then use the data indefinitely
 ### add _dev for dev
-config_dev = "config_dev.toml"
+config_dev = "/code/app/config_dev.toml"
 if not exists(config_dev):
-  config_file = "config.toml"
+  config_file = "/code/app/config.toml"
 else:
   print(MAGENTA,"DEV CONFIG FILE FOUND. YOU ARE NOW A DEVELOPER.",RESET)
   config_file = config_dev
