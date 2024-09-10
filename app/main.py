@@ -49,6 +49,9 @@ async def generate(prompt_request: PromptRequest):
         "image_base64": image_base64,  # you already returned base64 
         "total": total
       }), 
+    headers={
+      "Access-Control-Allow-Origin": "*"
+    }, 
     media_type="application/json", 
   )
 
