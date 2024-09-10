@@ -50,7 +50,7 @@ async def generate(prompt_request: PromptRequest):
         "total": total
       }), 
     headers={
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "https://imagen.ai.iziizz.com"
     }, 
     media_type="application/json", 
   )
