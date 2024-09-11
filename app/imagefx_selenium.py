@@ -33,6 +33,9 @@ pwd = os.getcwd()
 
 def xpath(count:int=1):
   return {
+    "antibot-btn": f"/html/body/div/div/div/div/form/button",
+    "home-imagefx-btn": f"/html/body/div/div/div/div[2]/div[2]/div/div[3]/a",
+
     "image-dlbtn": f"/html/body/div/div/div/div/div[1]/div[1]/div/div[{count}]/div/div[1]/div[1]/div[2]/div/button[2]",
               "err": f"/html/body/div/div/div/div/div[1]/div[1]/div/div[{count}]/h3",
     "textbox-prompt": "/html/body/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div/div/div[1]/div[1]",
@@ -68,7 +71,8 @@ def profile_launch_and_login(headless:bool=False):
   # Navigate to a URL, resize window
   driver = webdriver.Firefox(options=options)
   driver.set_window_size(1200, 900)
-  driver.get(f"https://aitestkitchen.withgoogle.com/tools/image-fx")
+  # driver.get(f"https://aitestkitchen.withgoogle.com/tools/image-fx")
+  driver.get(f"https://aitestkitchen.withgoogle.com")
 
   return driver
 
@@ -76,7 +80,7 @@ def profile_launch_and_login(headless:bool=False):
 def get_element(driver:webdriver, xpath:str):
   while True:
     try:
-      element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, xpath)))
+      element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, xpath)))
       return element
     except TimeoutException:
       raise Exception(f"Element not found: {xpath}")
@@ -98,9 +102,22 @@ class main():
     print(GREEN,'Profile launched and logged in',RESET)
   
   def run(self, prompt:str):
+    driver = self.driver
+    actions = self.actions
+    
+    # antibot logic
     try:
-      driver = self.driver
-      actions = self.actions
+      element = get_element(driver, xpath()['antibot-btn'])
+      actions.move_to_element(element).click().perform()
+      print(YELLOW,'antibot button detected and clicked',RESET)
+    except:
+      print(GREEN,'No antibot button detected. Proceeding...',RESET)
+
+    # main logic
+    try:
+      element = get_element(driver, xpath()['home-imagefx-btn'])
+      element.click()
+      print(GREEN,'<a> imagefx button clicked',RESET)
       # insert prompt
       element = get_element(driver, xpath()['textbox-prompt'])
       actions.move_to_element(element).click().perform()
