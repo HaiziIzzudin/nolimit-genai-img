@@ -147,7 +147,7 @@ class main():
 
       # init list to store image names, and wait for infer to finish
       self.image_list:list[str] = []
-      countdown("Waiting for infer to done in", 30)
+      countdown("Waiting for infer to done in", 20)
 
       # fetch the photo download btn
       for i in range(4):
