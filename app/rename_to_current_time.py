@@ -13,5 +13,5 @@ def return_renamed():
   """
 
   now = datetime.now()
-  now_str: str = now.strftime('FLUX_%Y%m%d_%H%M%S')
+  now_str: str = now.strftime('FLUX_%Y%m%d_%H%M%S_%f')
   return now_str

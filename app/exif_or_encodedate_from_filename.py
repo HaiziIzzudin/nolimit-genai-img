@@ -29,6 +29,7 @@ mediatype = 'images' ### IMAGES / VIDEOS
 def getImageDate(filepath):
   date_str = os.path.splitext(os.path.basename(filepath))[0].split("_")[1]
   time_str = os.path.splitext(os.path.basename(filepath))[0].split("_")[2]
+  microsec_str = os.path.splitext(os.path.basename(filepath))[0].split("_")[3]
   date_obj = datetime.strptime(date_str, "%Y%m%d")  ## this must be true otherwise ERR
   
   try:
