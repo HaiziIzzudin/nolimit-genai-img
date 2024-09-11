@@ -53,7 +53,7 @@ def profile_launch_and_login(headless:bool=False):
   print(GREEN,"Firefox download dir:",f"{pwd}{slash}{cf['savepath']}",RESET)
   # fetch profile path
   # path_to_profile:list[str] = cf['profiles_only']
-  path_to_profile:str = "/code/profile"
+  path_to_profile:str = cf['profiles_only'][0] if platform == "win32" else "/code/profile"
   print(GREEN,"Firefox profile path:",path_to_profile,RESET)
 
   # select 1st profile
@@ -73,7 +73,7 @@ def profile_launch_and_login(headless:bool=False):
 
   # Navigate to a URL, resize window
   driver = webdriver.Firefox(options=options)
-  driver.set_window_size(1600, 1200)
+  driver.set_window_size(1200, 900)
   # driver.get(f"https://aitestkitchen.withgoogle.com/tools/image-fx")
   driver.get(f"https://aitestkitchen.withgoogle.com")
 
@@ -151,8 +151,8 @@ class main():
 
       # fetch the photo download btn
       for i in range(4):
-        element = get_element(driver, xpath(i+1)["image-dlbtn"])
-        if element != False: # if there is an element
+        try: # if there is an element
+          element = get_element(driver, xpath(i+1)["image-dlbtn"])
           element.click()
           while True: # loop to check if the image is generated
             check = os.path.exists(f"{cf['savepath']}{slash}image_fx_.jpg")
@@ -163,7 +163,9 @@ class main():
               self.image_list.append(f"{pwd}{slash}{cf['savepath']}{slash}{newname_noext}.jpg")
               break
             else:  sleep(0.5)
-        else:  print(RED,f"Image #{i+1} no image generated",RESET)
+        except: # there is no element
+          print(RED,f"Image #{i+1} no image generated",RESET)
+          continue
       driver.close()
     except Exception as e:  # unexpected error need to close driver
       print(RED,e,RESET)
@@ -194,7 +196,7 @@ def return_for_api(prompt:str):  # for fastapi
 
 if __name__ == "__main__":
   mainprogram = main()
-  mainprogram.init_driver(headless=False)
+  mainprogram.init_driver(headless=True)
   mainprogram.run(cf['prompt'])
   
   # invoke opening folder if true
