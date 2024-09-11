@@ -52,11 +52,12 @@ def profile_launch_and_login(headless:bool=False):
   print(GREEN,"pwd:",pwd,RESET)
   print(GREEN,"Firefox download dir:",f"{pwd}{slash}{cf['savepath']}",RESET)
   # fetch profile path
-  path_to_profile:list[str] = cf['profiles_only']
+  # path_to_profile:list[str] = cf['profiles_only']
+  path_to_profile:str = "/code/profile"
   print(GREEN,"Firefox profile path:",path_to_profile,RESET)
 
   # select 1st profile
-  path_to_profile = path_to_profile[0]
+  # path_to_profile = path_to_profile[0]
 
   # init firefox options and profile paths
   options = Options()
@@ -122,6 +123,7 @@ class main():
     try:
       element = get_element(driver, xpath()['google-signin-btn'])
       print(RED,'Sign in button found! Exiting...',RESET)
+      driver.close()
       exit(2)
     except Exception as e:
       print(GREEN,'Sign in button not found. Proceeding...',RESET)
@@ -192,7 +194,7 @@ def return_for_api(prompt:str):  # for fastapi
 
 if __name__ == "__main__":
   mainprogram = main()
-  mainprogram.init_driver(headless=True)
+  mainprogram.init_driver(headless=False)
   mainprogram.run(cf['prompt'])
   
   # invoke opening folder if true

@@ -5,5 +5,5 @@ services:
     ports:
       - "3663:80"
     volumes:
-      - /home/haizi/guzlacpn.default-release-1:/code/guzlacpn.default-release-1
+      - /home/haizi/guzlacpn.default-release-1:/code/profile
       - /home/haizi/nolimit-genai-img/app:/code/app
