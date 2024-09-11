@@ -76,10 +76,10 @@ def profile_launch_and_login(headless:bool=False):
 def get_element(driver:webdriver, xpath:str):
   while True:
     try:
-      element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, xpath)))
+      element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, xpath)))
       return element
     except TimeoutException:
-      return False
+      raise Exception(f"Element not found: {xpath}")
 
 
 
