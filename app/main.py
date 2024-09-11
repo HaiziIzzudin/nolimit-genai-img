@@ -1,3 +1,4 @@
+import asyncio
 import base64
 import json
 from pydantic import BaseModel
@@ -38,15 +39,22 @@ async def generate(prompt_request: PromptRequest):
   prompt = prompt_request.prompt
   print(MAGENTA,"Prompt:",prompt,RESET)
   
-  data = hf_api_fastapi(prompt)
-  image_base64:list[str] = data[0]
-  total = data[1]
-  print(MAGENTA,"total:",data[1],RESET)
+  # data = hf_api_fastapi(prompt)
+
+  task1 = asyncio.to_thread(hf_api_fastapi, prompt, 0)
+  task2 = asyncio.to_thread(hf_api_fastapi, prompt, 1)
+  
+  data1, data2 = await asyncio.gather(task1, task2) # return base64 data
+
+  image_base64:list[str] = [data1,data2]
+  total = len(image_base64)
+
+  print(MAGENTA,"total:",total,RESET)
 
   return Response(
     content=json.dumps(
       {
-        "image_base64": image_base64,  # you already returned base64 
+        "image_base64": image_base64,  # you already returned base64 list
         "total": total
       }), 
     headers={
@@ -86,7 +94,6 @@ async def generate(prompt_request:PromptRequest):
   # memang functionality utk api JUST for fetch data. Any logic implement di client side.
 
 
-# pls follow tutorial from https://medium.com/@m.adel.abdelhady/deploying-fastapi-app-over-https-with-traefik-a-quick-step-by-step-guide-d440e87d8f44 to deploy with HTTPS
 
 
 # cd app; uvicorn main:app --reload 

@@ -76,8 +76,9 @@ def config_data():
 ### add _dev for dev
 
 if sys.platform == "win32":
-  config_dev = "app/config_dev.toml"
-  config_file = "app/config.toml"
+  config_dev = "config_dev.toml"  # why no trailing folder?
+  config_file = "config.toml"     # bcos tests with uvicorn, need to cd to app folder first 
+                                  # (make sure config / config_dev file in app folder)
 else:
   config_dev = "/code/app/config_dev.toml"
   config_file = "/code/app/config.toml"
