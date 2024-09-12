@@ -23,21 +23,23 @@ slash = "\\" if sys.platform == "win32" else "/"
 
 
 def img_postprocessing_logging(
-    old_filepath_url:str, 
-    savedir: str, 
-    new_filename_no_ext:str,
-    if_method_is_hftoken:bool=False
-    ):
+        old_filepath_url:str, 
+        savedir: str, 
+        new_filename_no_ext:str,
+        if_method_is_hftoken:bool=False
+        ):
   
   # convert image to jpg
-  while True:
+  for i in range(3):
     try:
       if if_method_is_hftoken == False:  os.path.exists(old_filepath_url) # if uses file download method, no direct data stream
       image = Image.open(old_filepath_url)
       break
     except OSError:
-      print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
-      sleep(5)
+      if i < 3:
+        print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
+        sleep(5)
+      else:   raise Exception("Image failed to process. Return to base.")
       
   image = image.convert('RGB')
   if not os.path.exists(savedir):  os.makedirs(savedir)

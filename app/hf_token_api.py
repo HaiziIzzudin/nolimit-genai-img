@@ -6,6 +6,9 @@ from random import randint
 from img_postprocessing_logging import img_postprocessing_logging
 from unlimited_ai_img import config_data
 cf = config_data()
+from colorama import Fore, Style
+RESET = Style.RESET_ALL
+GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 
 
 def hf_token_api(prompt:str, hftoken_index:int):
@@ -36,28 +39,30 @@ def hf_token_api(prompt:str, hftoken_index:int):
   print("HF_Token:", cf['tokens'][hftoken_index])
 
   # Make the API request
-  response = requests.post(
-    f"https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev", 
-    headers={"Authorization": f"Bearer {cf['tokens'][hftoken_index]}"}, 
-    json = {
+  try:
+    response = requests.post(
+      f"https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
+      headers={"Authorization": f"Bearer {cf['tokens'][hftoken_index]}"},
+      json = {
       "inputs": prompt,
       "parameters": {
-        "width": 768,
-        "height": 1024,
-        "seed": randint(100_000_000, 999_999_999)
+          "width": 768,
+          "height": 1024,
+          "seed": randint(100_000_000, 999_999_999)
       },
       "options": {
-        "inference_count": 18
+          "inference_count": 18
       }
-    }
-  )
-  
-  newname = uuid()
-  img_postprocessing_logging(
-    io.BytesIO(response.content),
-    cf['savepath'],
-    newname, True
-  )
-
-  image_base64 = b64encode(response.content).decode('utf-8')
-  return image_base64
+      }
+    )
+    newname = uuid()
+    img_postprocessing_logging(
+      io.BytesIO(response.content),
+      cf['savepath'],
+      newname, True
+    )
+    image_base64 = b64encode(response.content).decode('utf-8')
+    return image_base64
+  except Exception as e:
+    print(RED,e,RESET)
+    return None

@@ -46,7 +46,10 @@ async def generate(prompt_request: PromptRequest):
   
   data1, data2 = await asyncio.gather(task1, task2) # return base64 data
 
-  image_base64:list[str] = [data1,data2]
+  image_base64:list[str] = []
+  for data in [data1, data2]:
+    if not (data == None):   image_base64.append(data)
+  
   total = len(image_base64)
 
   print(MAGENTA,"total:",total,RESET)
