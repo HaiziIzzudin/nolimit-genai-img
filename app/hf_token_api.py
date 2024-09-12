@@ -1,8 +1,14 @@
+from base64 import b64encode
+import io
+import uuid
 import requests
 from random import randint
+from img_postprocessing_logging import img_postprocessing_logging
+from unlimited_ai_img import config_data
+cf = config_data()
 
 
-def hf_token(hf_token:str, model:str, prompt:str, width:int, height:int, inference_count:int):
+def hf_token_api(prompt:str, hftoken_index:int):
   # Construct the payload with dynamic parameters for width, height, and inference count
   """
   Make an API request to the Hugging Face inference API using the given
@@ -12,16 +18,8 @@ def hf_token(hf_token:str, model:str, prompt:str, width:int, height:int, inferen
   ----------
   hf_token : str
     The token to use for authentication.
-  model : str
-    The model to use for the request.
   prompt : str
     The prompt to use for the request.
-  width : int
-    The width of the output image.
-  height : int
-    The height of the output image.
-  inference_count : int
-    The number of times to run the model with the given prompt.
 
   Returns
   -------
@@ -34,23 +32,32 @@ def hf_token(hf_token:str, model:str, prompt:str, width:int, height:int, inferen
     ```
     to interpret and save the photo.
   """
-  payload = {
-    "inputs": prompt,
-    "parameters": {
-      "width": width,
-      "height": height,
-      "seed": randint(100_000_000, 999_999_999)
-    },
-    "options": {
-      "inference_count": inference_count
-    }
-  }
-  
+  # show what hf token picked
+  print("HF_Token:", cf['tokens'][hftoken_index])
+
   # Make the API request
   response = requests.post(
-    f"https://api-inference.huggingface.co/models/{model}", 
-    headers={"Authorization": f"Bearer {hf_token}"}, 
-    json=payload
+    f"https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev", 
+    headers={"Authorization": f"Bearer {cf['tokens'][hftoken_index]}"}, 
+    json = {
+      "inputs": prompt,
+      "parameters": {
+        "width": 768,
+        "height": 1024,
+        "seed": randint(100_000_000, 999_999_999)
+      },
+      "options": {
+        "inference_count": 18
+      }
+    }
   )
   
-  return response.content
+  newname = uuid.uuid4()
+  img_postprocessing_logging(
+    io.BytesIO(response.content),
+    cf['savepath'],
+    newname, True
+  )
+
+  image_base64 = b64encode(response.content).decode('utf-8')
+  return image_base64

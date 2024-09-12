@@ -1,7 +1,7 @@
 from time import sleep
 from PIL import Image
 from send2trash import send2trash
-from exif_or_encodedate_from_filename import add_exifdate_to_img
+from exif_or_encodedate_from_filename import add_exifdate_to_img, add_exifdate_newmethod
 import os, sys, subprocess
 from raw import convert2raw
 from unlimited_ai_img import now, write_to_output
@@ -26,18 +26,18 @@ def img_postprocessing_logging(
     old_filepath_url:str, 
     savedir: str, 
     new_filename_no_ext:str,
-    if_token:bool=False
+    if_method_is_hftoken:bool=False
     ):
   
   # convert image to jpg
   while True:
     try:
-      if not if_token:  os.path.exists(old_filepath_url)
+      if if_method_is_hftoken == False:  os.path.exists(old_filepath_url) # if uses file download method, no direct data stream
       image = Image.open(old_filepath_url)
       break
     except:
       print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
-      sleep(2)
+      sleep(5)
       
   image = image.convert('RGB')
   if not os.path.exists(savedir):  os.makedirs(savedir)
@@ -46,10 +46,10 @@ def img_postprocessing_logging(
   
   # send2trash old webp image
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
-  if not if_token:  send2trash( old_filepath_url )
+  if if_method_is_hftoken == False:  send2trash( old_filepath_url )
 
   # add exif date to image based on, not include working directory
-  add_exifdate_to_img(f"{savedir}{slash}{new_filename_no_ext}.jpg")
+  add_exifdate_newmethod(f"{savedir}{slash}{new_filename_no_ext}.jpg")
 
 
 

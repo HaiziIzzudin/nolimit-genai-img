@@ -7,7 +7,7 @@ from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from colorama import Fore, Style
 
-from hf_api import hf_api_fastapi
+from hf_token_api import hf_token_api
 from imagefx_selenium import return_for_api as imagefx_api
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
@@ -41,8 +41,8 @@ async def generate(prompt_request: PromptRequest):
   
   # data = hf_api_fastapi(prompt)
 
-  task1 = asyncio.to_thread(hf_api_fastapi, prompt, 0)
-  task2 = asyncio.to_thread(hf_api_fastapi, prompt, 1)
+  task1 = asyncio.to_thread(hf_token_api, prompt, 0)
+  task2 = asyncio.to_thread(hf_token_api, prompt, 1)
   
   data1, data2 = await asyncio.gather(task1, task2) # return base64 data
 
@@ -96,7 +96,7 @@ async def generate(prompt_request:PromptRequest):
 
 
 
-# cd app; uvicorn main:app --reload 
+# uvicorn main:app --reload 
 # (run this many times until no error emerges, 
 
 

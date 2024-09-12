@@ -79,7 +79,7 @@ def run_inference(client, loop_number:int, inference_steps:int):
 
 
 class master():
-  def run(self, hftoken_fromconfig_index:int, model_name:str, prompt:str, width:int, height:int, inference_count:int):
+  def run(self):
     """
     Runner function for generating images using HuggingFace's API.
 
@@ -93,45 +93,21 @@ class master():
     Returns:
         None
     """
-    try:
-      token_list = cf['tokens']
-      print("HF_Token:", token_list[hftoken_fromconfig_index])
-      content = hf_token(
-        token_list[hftoken_fromconfig_index],
-        model_name,
-        prompt,
-        width, height,
-        inference_count
-      )
-      self.newname = return_renamed()
-      img_postprocessing_logging(
-        io.BytesIO(content),
-        cf['savepath'],
-        self.newname, True
-      )
     
-    except Exception as e:
-      print(YELLOW,e,"\n",f'Exhausted all user tokens. Fallback to anonymous user...',RESET)
+    client = newIP_and_load_hf_model(cf['model_name'])
+    imgpath = run_inference(client, i+1, cf['inference_count'])
+
+    while not imgpath['generation bool']: # gen bool => false => not => true
+      print(imgpath['path/message'])  ## MESSAGE: changing server
       client = newIP_and_load_hf_model(cf['model_name'])
       imgpath = run_inference(client, i+1, cf['inference_count'])
-
-      while not imgpath['generation bool']: # gen bool => false => not => true
-        print(imgpath['path/message'])  ## MESSAGE: changing server
-        client = newIP_and_load_hf_model(cf['model_name'])
-        imgpath = run_inference(client, i+1, cf['inference_count'])
-      else: # gen bool => true => not => false
-        self.newname = return_renamed()
-        img_postprocessing_logging(
-          imgpath['path/message'], 
-          cf['savepath'], 
-          self.newname
-        )
-  
-  def return_for_api(self):
-    with open(f"{cf['savepath']}/{self.newname}.jpg", 'rb') as f:   
-      image_base64 = base64.b64encode(f.read()).decode('utf-8')
-    return image_base64
-    
+    else: # gen bool => true => not => false
+      self.newname = return_renamed()
+      img_postprocessing_logging(
+        imgpath['path/message'], 
+        cf['savepath'], 
+        self.newname
+      )
   
   def return_for_local(self):
     return
@@ -148,17 +124,6 @@ class master():
 
 
 mtr = master()
-
-def hf_api_fastapi(prompt, hftoken_fromconfig_index:int):
-  print(MAGENTA,f'FASTAPI: Generating image...',RESET)
-  mtr.run(
-    hftoken_fromconfig_index,
-    'black-forest-labs/FLUX.1-dev',
-    prompt,
-    768, 1024, 20
-  )
-  data = mtr.return_for_api()
-  return data # this return image base64 and total generated (penyelarasan api)
 
 if __name__ == '__main__':
   print(f"Proxy finding version: {cf['proxy_finder_ver']}\n")

@@ -99,3 +99,13 @@ def add_exifdate_to_img(filename):
     exit(1)
 
 
+
+
+
+def add_exifdate_newmethod(full_filepath:str):
+  datetime_obj = datetime.now()
+  ## change EXIF trio dates
+  command = f'"{exiftool_location}" -AllDates="{datetime_obj}" -overwrite_original "{pwd}{slash}{full_filepath}"'
+  ### YES WINDOWS TERMINAL CAN ONLY INTERPRET DOUBLE QUOTE AS ENCLOSING FOR ANY ARGUMENT PASS THAT HAS SPACES!
+  print(command)
+  subprocess.run(command, shell=True) # WINDOWS: command cannot be separated into a list, and must imclude shell=True
