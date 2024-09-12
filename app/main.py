@@ -41,7 +41,12 @@ async def generate(prompt_request: PromptRequest):
   
   # data = hf_api_fastapi(prompt)
 
-  task1 = asyncio.to_thread(hf_token_api, prompt, 0)
+  while True: 
+    try:
+      task1 = asyncio.to_thread(hf_token_api, prompt, 0)
+      break
+    except Exception as e:
+      print(f"Error: {e}. Retrying...")
   # task2 = asyncio.to_thread(hf_token_api, prompt, 1)
   
   data1 = await asyncio.gather(task1) # return base64 data
