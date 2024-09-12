@@ -30,20 +30,12 @@ def img_postprocessing_logging(
         ):
   
   # convert image to jpg
-  for i in range(3):
-    try:
-      if if_method_is_hftoken == False:  os.path.exists(old_filepath_url) # if uses file download method, no direct data stream
-      image = Image.open(old_filepath_url)
-      image = image.convert('RGB')
-      if not os.path.exists(savedir):  os.makedirs(savedir)
-      image.save(f"{savedir}{slash}{new_filename_no_ext}.jpg")
-      write_to_output('img_new_filepath', f"{savedir}{slash}{new_filename_no_ext}.jpg")
-      break
-    except OSError:
-      if i < 3:
-        print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
-        sleep(5)
-      else:   raise Exception("Image failed to process. Return to base.")
+  if if_method_is_hftoken == False:  sleep(3) # if uses file download method, no direct data stream
+  image = Image.open(old_filepath_url)
+  image = image.convert('RGB')
+  if not os.path.exists(savedir):  os.makedirs(savedir)
+  image.save(f"{savedir}{slash}{new_filename_no_ext}.jpg")
+  write_to_output('img_new_filepath', f"{savedir}{slash}{new_filename_no_ext}.jpg")
       
   # send2trash old webp image
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
