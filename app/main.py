@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from colorama import Fore, Style
 
 from hf_token_api import hf_token_api
-from imagefx_selenium import return_for_api as imagefx_api
+from imagefx_selenium import mainprogram
 from unlimited_ai_img import config_data
 cf = config_data()
 RESET = Style.RESET_ALL
@@ -80,10 +80,11 @@ async def generate(prompt_request:PromptRequest):
   prompt = prompt_request.prompt
   print(MAGENTA,"Prompt:",prompt,RESET)
   
-  data = imagefx_api(prompt)
-  image_base64:list[str] = data[0]
-  total = data[1]
-  print(MAGENTA,"total:",data[1],RESET)
+  data = mainprogram(prompt)
+  image_base64 = data.return_base64()
+
+  total = len(image_base64)
+  print(MAGENTA,"total:",total,RESET)
   
   return Response(
     content=json.dumps(

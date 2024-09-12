@@ -1,8 +1,7 @@
-from uuid import uuid4 as uuid
-import base64
+from base64 import b64encode
 from selenium import webdriver
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -11,26 +10,23 @@ from selenium.webdriver.common.proxy import Proxy
 from selenium.webdriver.common.proxy import ProxyType
 from selenium.webdriver import ActionChains
 import os
+from random import randint
 from sys import platform
 from time import sleep
 from colorama import Fore, Style
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 
-from rename_to_current_time import return_renamed
-from img_postprocessing_logging import img_postprocessing_logging, open_folder
-from unlimited_ai_img import config_data, write_to_output, now
+from img_postprocessing_logging import img_pp, open_folder
+from unlimited_ai_img import config_data
 from countdown import countdown
 cf = config_data()
 
 slash = "\\" if platform == "win32" else "/"
 
 pwd = os.getcwd()
+home = os.path.expanduser("~")
 
-# xpath to interact with the website
-# xpath: dict[str, str] = {
-
-#   }
 
 def xpath(count:int=1):
   return {
@@ -48,46 +44,44 @@ def xpath(count:int=1):
 
 
 
-def profile_launch_and_login(headless:bool=False):
-  
-  print(GREEN,"pwd:",pwd,RESET)
-  print(GREEN,"Firefox download dir:",f"{pwd}{slash}{cf['savepath']}",RESET)
-  # fetch profile path
-  # path_to_profile:list[str] = cf['profiles_only']
-  path_to_profile:str = cf['profiles_only'][0] if platform == "win32" else "/code/profile"
-  print(GREEN,"Firefox profile path:",path_to_profile,RESET)
+class initdriver:
+  def __init__(self, headless:bool = False):
+    
+    print(GREEN,"pwd:",pwd,RESET)
+    print(GREEN,"Firefox download dir:",f"{pwd}{slash}output",RESET)
 
-  # select 1st profile
-  # path_to_profile = path_to_profile[0]
+    # selecting random profiles
+    if platform == "win32":
+      profiles = [
+        home+"\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\guzlacpn.default-release-1",
+        home+"\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\qy1zdxsm.default-release"
+        ]
+    else:
+      profiles = ["/code/profile1", "/code/profile2"]
 
-  # init firefox options and profile paths
-  options = Options()
-  if headless:  options.add_argument("-headless")
-  options.profile = webdriver.FirefoxProfile(path_to_profile) 
-  # auto download settings
-  options.profile.set_preference("browser.download.folderList", 2)
-  options.profile.set_preference("browser.download.dir", f"{pwd}{slash}{cf['savepath']}")
-  if not os.path.exists(cf['savepath']):  os.makedirs(cf['savepath'])
-  options.profile.set_preference("browser.helperApps.neverAsk.saveToDisk","image/jpeg")
-  # other firefox options (including pageload strategy and https settings)
-  # options.page_load_strategy = 'eager'
+    profile_select = profiles[randint(0, len(profiles)-1)]
+    print(GREEN,"Firefox profile path:",profile_select,RESET)
 
-  # Navigate to a URL, resize window
-  driver = webdriver.Firefox(options=options)
-  driver.set_window_size(1200, 900)
-  # driver.get(f"https://aitestkitchen.withgoogle.com/tools/image-fx")
-  driver.get(f"https://aitestkitchen.withgoogle.com")
+    # after that, we init firefox options
+    options = Options()
+    if headless:  options.add_argument("-headless")
+    options.profile = webdriver.FirefoxProfile(profile_select) 
+    # auto download settings
+    options.profile.set_preference("browser.download.folderList", 2)
+    options.profile.set_preference("browser.download.dir", f"{pwd+slash}output")
+    if not os.path.exists(f"{pwd+slash}output"):  os.makedirs(f"{pwd+slash}output")
 
-  return driver
+    # Navigate to a URL, resize window
+    self.driver = webdriver.Firefox(options=options)
+    self.driver.set_window_size(1200, 900)
+    self.driver.get(f"https://aitestkitchen.withgoogle.com")
+    print(GREEN,"Navigated to 'aitestkitchen.withgoogle.com'",RESET)
+
+  def get_element(self, xpath:str):
+    element = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, xpath)))
+    return element
 
 
-def get_element(driver:webdriver, xpath:str):
-  while True:
-    try:
-      element = WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, xpath)))
-      return element
-    except TimeoutException:
-      raise Exception(f"Element not found: {xpath}")
 
 
 
@@ -96,111 +90,94 @@ def get_element(driver:webdriver, xpath:str):
 ### MAIN ###
 ############
 
-class main():
-  
-  def init_driver(self, headless:bool):
-    # launch profile and login, return driver
-    self.driver = profile_launch_and_login(headless)
-    # init actions
-    self.actions = ActionChains(self.driver)
-    print(GREEN,'Profile launched and logged in',RESET)
-  
-  def run(self, prompt:str):
-    driver = self.driver
-    actions = self.actions
-    
-    # antibot logic
-    try:
-      element = get_element(driver, xpath()['antibot-btn'])
-      actions.move_to_element(element).click().perform()
-      print(YELLOW,'antibot button detected and clicked',RESET)
+
+class mainprogram:
+  def __init__(self, prompt:str):
+    # navigate to imagefx
+    m = initdriver(headless=(platform != "win32"))
+    act = ActionChains(m.driver)
+    xp = xpath()
+    try: # check if antibot button exists
+      element = m.get_element(xp['antibot-btn'])
+      act.move_to_element(element).click().perform()
+      print(YELLOW,'antibot button found. Clicked!',RESET)
     except:
-      print(GREEN,'No antibot button detected. Proceeding...',RESET)
-    
-    # click imagefx button
-    element = get_element(driver, xpath()['home-imagefx-btn'])
+      print(GREEN,'antibot button not found. Proceeding...',RESET)
+
+    # click imagefx btn
+    element = m.get_element(xp['home-imagefx-btn'])
     element.click()
     print(GREEN,'<a> imagefx button clicked',RESET)
 
     # test google sign in blocking
     try:
-      element = get_element(driver, xpath()['google-signin-btn'])
+      element = m.get_element(xp['google-signin-btn'])
       print(RED,'Sign in button found! Exiting...',RESET)
-      driver.close()
+      m.driver.close()
       exit(2)
     except Exception as e:
       print(GREEN,'Sign in button not found. Proceeding...',RESET)
 
+    # main infer
+    element = m.get_element(xp['textbox-prompt'])
+    act.move_to_element(element).click().perform()
+    print(GREEN,'Inserting Prompt',RESET)
 
-    # main logic
-    try:
-      # insert prompt
-      element = get_element(driver, xpath()['textbox-prompt'])
-      actions.move_to_element(element).click().perform()
-      print(GREEN,'Inserting Prompt',RESET)
-      # Send each character with a small delay
-      for char in prompt:
-        actions.send_keys(char).perform()
-        sleep(0.05)
-      print(GREEN,'Prompt inserted',RESET)
-      # click run
-      element = get_element(driver, xpath()['run'])
-      element.click()
-      print(GREEN,'run button clicked',RESET)
+    # Send each character with a small delay
+    for char in prompt:
+      act.send_keys(char).perform()
+      sleep(0.05)
+    print(GREEN,'Prompt inserted',RESET)
 
-      # init list to store image names, and wait for infer to finish
-      self.image_list:list[str] = []
-      countdown("Waiting for infer to done in", 20)
+    # click run
+    element = m.get_element(xp['run'])
+    element.click()
+    print(GREEN,'run button clicked',RESET)
 
-      # fetch the photo download btn
-      for i in range(4):
-        try: # if there is an element
-          element = get_element(driver, xpath(i+1)["image-dlbtn"])
-          element.click()
-          while True: # loop to check if the image is generated
-            check = os.path.exists(f"{cf['savepath']}{slash}image_fx_.jpg")
-            if check == True:
-              sleep(2)
-              newname_noext = uuid()
-              img_postprocessing_logging(f"{pwd}{slash}{cf['savepath']}{slash}image_fx_.jpg", cf['savepath'], newname_noext)
-              self.image_list.append(f"{pwd}{slash}{cf['savepath']}{slash}{newname_noext}.jpg")
-              break
-            else:  sleep(0.5)
-        except: # there is no element
-          print(RED,f"Image #{i+1} no image generated",RESET)
-          continue
-      driver.close()
-    except Exception as e:  # unexpected error need to close driver
-      print(RED,e,RESET)
-      driver.close()
-      exit(1)
+    # now we wait for the image to be generated
+    countdown("Waiting for infer to done in", 20)
 
+    # init list to store image names
+    self.img_base64_list:list[str] = []
+
+    # fetch the photo download btn
+    for i in range(4):
+      xp = xpath(i+1)
+      try: # if there is download btn, click it
+        element = m.get_element(xp['image-dlbtn'])
+        element.click()
+        sleep(3) # wait for download
+        # convert image binary to base64
+        with open(f"{pwd+slash}output{slash}image_fx_.jpg", "rb") as image_file:
+          image_data = image_file.read()
+          img_base64 = b64encode(image_data).decode('utf-8')
+          self.img_base64_list.append(img_base64)
+        # postprocess image
+        img_pp(f"{pwd+slash}output{slash}image_fx_.jpg")
+        print(GREEN,f"Image #{i+1} generated. Downloaded.",RESET)
+      except NoSuchElementException as e: # there is no element
+        print(RED,e,RESET)
+        print(RED,f"Image #{i+1} no image generated",RESET)
+        continue
+
+    m.driver.close()
 
   def return_base64(self):
-    image_base64_list:list[str] = []
-    for img in self.image_list:
-      with open(img, 'rb') as f:
-        image_base64 = base64.b64encode(f.read()).decode('utf-8')
-        image_base64_list.append(image_base64)
-    return image_base64_list
+    """
+    Return a list of base64 strings of generated images.
 
+    Returns:
+        list[str]: A list of base64 strings of generated images.
+    """
+    return self.img_base64_list
+  
+  def return_forlocal(self):
+    open_folder(f"{pwd+slash}output")
 
-
-
-
-def return_for_api(prompt:str):  # for fastapi
-  mainprogram = main()
-  mainprogram.init_driver(headless=True)
-  mainprogram.run(prompt)
-  data = mainprogram.return_base64()
-  return data, len(data) # count from 1
 
 
 
 if __name__ == "__main__":
-  mainprogram = main()
-  mainprogram.init_driver(headless=True)
-  mainprogram.run(cf['prompt'])
-  
-  # invoke opening folder if true
-  if cf['opendir_on_finish']:   open_folder(cf['savepath'])
+  m = mainprogram(input("Enter prompt: "))
+  print(m.return_base64())
+  m.return_forlocal()
