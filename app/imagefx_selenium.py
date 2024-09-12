@@ -116,9 +116,11 @@ class main():
       print(YELLOW,'antibot button detected and clicked',RESET)
     except:
       print(GREEN,'No antibot button detected. Proceeding...',RESET)
-      element = get_element(driver, xpath()['home-imagefx-btn'])
-      element.click()
-      print(GREEN,'<a> imagefx button clicked',RESET)
+    
+    # click imagefx button
+    element = get_element(driver, xpath()['home-imagefx-btn'])
+    element.click()
+    print(GREEN,'<a> imagefx button clicked',RESET)
 
     # test google sign in blocking
     try:
