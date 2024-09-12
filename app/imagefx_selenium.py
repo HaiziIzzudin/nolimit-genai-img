@@ -7,9 +7,8 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.proxy import Proxy
-from selenium.webdriver.common.proxy import ProxyType
 from selenium.webdriver import ActionChains
+from selenium.common.exceptions import TimeoutException
 import os
 from random import randint
 from sys import platform
@@ -154,7 +153,7 @@ class mainprogram:
         # postprocess image
         img_pp(f"{pwd+slash}output{slash}image_fx_.jpg")
         print(GREEN,f"Image #{i+1} generated. Downloaded.",RESET)
-      except NoSuchElementException as e: # there is no element
+      except (TimeoutException, NoSuchElementException) as e: # there is no element
         print(RED,e,RESET)
         print(RED,f"Image #{i+1} no image generated",RESET)
         continue
