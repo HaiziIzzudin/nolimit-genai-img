@@ -1,6 +1,6 @@
 from base64 import b64encode
 import io
-import uuid
+from uuid import uuid4 as uuid
 import requests
 from random import randint
 from img_postprocessing_logging import img_postprocessing_logging
@@ -52,7 +52,7 @@ def hf_token_api(prompt:str, hftoken_index:int):
     }
   )
   
-  newname = uuid.uuid4()
+  newname = uuid()
   img_postprocessing_logging(
     io.BytesIO(response.content),
     cf['savepath'],

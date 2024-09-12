@@ -35,7 +35,7 @@ def img_postprocessing_logging(
       if if_method_is_hftoken == False:  os.path.exists(old_filepath_url) # if uses file download method, no direct data stream
       image = Image.open(old_filepath_url)
       break
-    except:
+    except OSError:
       print(MAGENTA+"Image download not completed yet. Retrying..."+RESET, end="\r")
       sleep(5)
       

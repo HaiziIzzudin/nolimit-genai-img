@@ -1,3 +1,4 @@
+from uuid import uuid4 as uuid
 import base64
 from selenium import webdriver
 from selenium import webdriver
@@ -158,7 +159,7 @@ class main():
             check = os.path.exists(f"{cf['savepath']}{slash}image_fx_.jpg")
             if check == True:
               sleep(2)
-              newname_noext = return_renamed()
+              newname_noext = uuid()
               img_postprocessing_logging(f"{pwd}{slash}{cf['savepath']}{slash}image_fx_.jpg", cf['savepath'], newname_noext)
               self.image_list.append(f"{pwd}{slash}{cf['savepath']}{slash}{newname_noext}.jpg")
               break
