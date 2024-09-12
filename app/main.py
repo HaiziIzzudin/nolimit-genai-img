@@ -42,23 +42,13 @@ async def generate(prompt_request: PromptRequest):
   print(MAGENTA,"Prompt:",prompt,RESET)
   
   # data = hf_api_fastapi(prompt)
-
-  while True: 
-    try:
-      task1 = asyncio.to_thread(hf_token_api, prompt, randint(0, len(cf['tokens'])-1))
-      break
-    except Exception as e:
-      print(f"Error: {e}. Retrying...")
-  # task2 = asyncio.to_thread(hf_token_api, prompt, 1)
-  
+  task1 = asyncio.to_thread(hf_token_api, prompt) # which token is determined inside hf_token_api
   data1 = await asyncio.gather(task1) # return base64 data
 
   image_base64:list[str] = [data1]
-  
   total = len(image_base64)
-
   print(MAGENTA,"total:",total,RESET)
-
+  
   return Response(
     content=json.dumps(
       {
