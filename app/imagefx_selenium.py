@@ -1,4 +1,5 @@
 from base64 import b64encode
+from uuid import uuid4 as uuid
 from selenium import webdriver
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -78,7 +79,7 @@ class initdriver:
     print(GREEN,"Navigated to 'aitestkitchen.withgoogle.com'",RESET)
 
   def get_element(self, xpath:str):
-    element = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, xpath)))
+    element = WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, xpath)))
     return element
 
 
@@ -123,10 +124,8 @@ class mainprogram:
     act.move_to_element(element).click().perform()
     print(GREEN,'Inserting Prompt',RESET)
 
-    # Send each character with a small delay
-    for char in prompt:
-      act.send_keys(char).perform()
-      sleep(0.05)
+    # Send prompt
+    element.send_keys(prompt)
     print(GREEN,'Prompt inserted',RESET)
 
     # click run
@@ -179,5 +178,8 @@ class mainprogram:
 
 if __name__ == "__main__":
   m = mainprogram(input("Enter prompt: "))
-  print(m.return_base64())
+  filename = f"{pwd+slash}{uuid()}.txt"
+  with open(filename, "w") as f:
+    f.write("\n".join(m.return_base64()))
+  print(GREEN,f"Base64 written to {filename}",RESET)
   m.return_forlocal()
