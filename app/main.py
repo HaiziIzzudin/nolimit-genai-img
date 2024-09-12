@@ -42,11 +42,11 @@ async def generate(prompt_request: PromptRequest):
   # data = hf_api_fastapi(prompt)
 
   task1 = asyncio.to_thread(hf_token_api, prompt, 0)
-  task2 = asyncio.to_thread(hf_token_api, prompt, 1)
+  # task2 = asyncio.to_thread(hf_token_api, prompt, 1)
   
-  data1, data2 = await asyncio.gather(task1, task2) # return base64 data
+  data1 = await asyncio.gather(task1) # return base64 data
 
-  image_base64:list[str] = [data1, data2]
+  image_base64:list[str] = [data1]
   
   total = len(image_base64)
 

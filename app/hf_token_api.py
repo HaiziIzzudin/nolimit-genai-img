@@ -55,10 +55,12 @@ def hf_token_api(prompt:str, hftoken_index:int):
     }
   )
   newname = uuid()
+  print(MAGENTA,"newname:",newname,RESET)
   img_postprocessing_logging(
     io.BytesIO(response.content),
     cf['savepath'],
-    newname, True
+    newname, 
+    True
   )
   image_base64 = b64encode(response.content).decode('utf-8')
   return image_base64
