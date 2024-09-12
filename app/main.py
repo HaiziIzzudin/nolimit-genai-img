@@ -1,6 +1,6 @@
 import asyncio
-import base64
 import json
+from random import randint
 from pydantic import BaseModel
 from fastapi import FastAPI
 from fastapi.responses import Response
@@ -9,6 +9,8 @@ from colorama import Fore, Style
 
 from hf_token_api import hf_token_api
 from imagefx_selenium import return_for_api as imagefx_api
+from unlimited_ai_img import config_data
+cf = config_data()
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 
@@ -43,7 +45,7 @@ async def generate(prompt_request: PromptRequest):
 
   while True: 
     try:
-      task1 = asyncio.to_thread(hf_token_api, prompt, 0)
+      task1 = asyncio.to_thread(hf_token_api, prompt, randint(0, len(cf['tokens'])-1))
       break
     except Exception as e:
       print(f"Error: {e}. Retrying...")
