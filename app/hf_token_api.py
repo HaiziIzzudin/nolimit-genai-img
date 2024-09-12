@@ -3,7 +3,7 @@ import io
 from uuid import uuid4 as uuid
 import requests
 from random import randint
-from img_postprocessing_logging import img_postprocessing_logging
+from img_postprocessing_logging import img_pp
 from unlimited_ai_img import config_data
 cf = config_data()
 from colorama import Fore, Style
@@ -56,10 +56,8 @@ def hf_token_api(prompt:str, hftoken_index:int):
   )
   newname = uuid()
   print(MAGENTA,"newname:",newname,RESET)
-  img_postprocessing_logging(
+  img_pp(
     io.BytesIO(response.content),
-    cf['savepath'],
-    newname, 
     True
   )
   image_base64 = b64encode(response.content).decode('utf-8')

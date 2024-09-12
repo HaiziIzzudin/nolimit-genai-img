@@ -1,9 +1,11 @@
 services:
   fastapi:
     image: "fastapi-imagen"
+    restart: unless-stopped
     container_name: "fastapi-container"
     ports:
       - "3663:80"
     volumes:
-      - /home/haizi/guzlacpn.default-release-1:/code/profile
+      - /home/haizi/guzlacpn.default-release-1:/code/profile1
+      - /home/haizi/qy1zdxsm.default-release:/code/profile2
       - /home/haizi/nolimit-genai-img/app:/code/app
