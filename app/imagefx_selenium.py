@@ -78,7 +78,7 @@ class initdriver:
     print(GREEN,"Navigated to 'aitestkitchen.withgoogle.com'",RESET)
 
   def get_element(self, xpath:str):
-    element = WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, xpath)))
+    element = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, xpath)))
     return element
 
 
