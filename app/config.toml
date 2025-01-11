@@ -19,9 +19,9 @@
 # where is root directory? Pls go to about:profile in firefox to get your root directory path.
 profile = [
   
-  [true, "path\\to\\firefox\\profile"],
-  [true, "path\\to\\firefox\\profile"],
-  [false, "path\\to\\firefox\\profile"]
+  [true, "/code/profile1"], # main acc
+  [true, "/code/profile2"], # backup acc
+  [false, "/code/profile2"], # no acc
   
   ] 
 # first parameter is indicating if your profile is logged in to huggingface. Only accepting boolean (true | false)
@@ -35,38 +35,6 @@ token = [
 ] # replace this string with your own HF token.
 # Please refer https://huggingface.co/settings/tokens for more information
 
-
-[model] # User don't have to adjust this section unless you know what you doing.
-model_name = "black-forest-labs/FLUX.1-dev"
-inference = 25
-
-
-[generation]
-prompt = ""  # any prompt that you like
-generation_count = 1
-image_dimension = "768x1024"  # Portrait 4 by 3 higher res
-# image_dimension = "1024x768"  # Landscape 4 by 3 higher res
-# image_dimension = "600x800"  # Portrait 4 by 3 lower res
-# image_dimension = "800x600"  # Landscape 4 by 3 lower res
-# image_dimension MUST FOLLOW FORMAT widthxheight (example: "800x600") (with quotes).
-# feel free to uncomment which to use, or write custom value.
-
-
-[file_management]
-savedir = "output"
-open_folder_after_execution = true   # true | false
-# TAKE NOTE: Only accepting absolute path (example: C:\\Users\\user).
-#            If you are on Windows, you are required to put double back slashes.  
-#            and at the end do not put any slashes, it will cause error. 
-
-
-
-[developer]
-proxy_finding_version = 1
-# "proxy_finding_version = 0" is using this computer ip
-# "proxy_finding_version = 1" is using custom ip checking, recommended
-# "proxy_finding_version = 2" is using FreeProxy python module, less reliable
-# as their ip is kinda same
 
 # utk hf_api, image dah didownloadkn ke local pc
 # utk hf_selenium, kita pakai requests utk download

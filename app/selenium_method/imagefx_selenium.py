@@ -18,7 +18,7 @@ RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 
 from img_postprocessing_logging import img_pp, open_folder
-from unlimited_ai_img import config_data
+from app.toml_ingest import config_data
 from countdown import countdown
 cf = config_data()
 

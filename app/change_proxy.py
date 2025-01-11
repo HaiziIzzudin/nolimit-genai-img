@@ -9,9 +9,9 @@ RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 from fp.fp import FreeProxy
 
-from unlimited_ai_img import config_data, write_to_output, now
-cf = config_data()
-
+if __name__ != '__main__':
+  from toml_ingest import config_data
+  cf = config_data()
 
 
 
@@ -40,7 +40,6 @@ if version == 0:  # use computer ip
     if response.status_code == 200: ## OK
       response = json.loads(response.text)
       response = f"Connected to local computer {response['origin']} 🛜"
-      write_to_output('ip', response['origin'])
       print(GREEN, response, RESET)
     return
 
@@ -53,27 +52,18 @@ elif version == 1:
       # disconnect from malfunctioned proxy
       socks.set_default_proxy()
       proxy_lists = 'https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.json'
-      write_to_output('proxy_lists', proxy_lists)
       response = requests.get(proxy_lists)
       data = json.loads(response.content)
 
       while True: # loop until breaks
         rand = random.randint(0, (len(data) - 1))
-        write_to_output('proxy_data_count', len(data))
-        write_to_output('lucky_number', rand)
-        
         proxy_url = data[rand]["proxy"]
         protocol = data[rand]["protocol"]
         ip = data[rand]["ip"]
         port = data[rand]["port"]
-        write_to_output('proxy_url', proxy_url)
-        write_to_output('protocol', protocol)
-        write_to_output('ip', ip)
-        write_to_output('port', port)
 
         try:
           print(YELLOW, f"Connecting to proxy {ip}...", RESET)
-          write_to_output('connection_testing_begin', now())
 
           if (protocol == 'socks5'):
             socks.set_default_proxy(socks.SOCKS5, ip, port)
@@ -92,20 +82,14 @@ elif version == 1:
           break
 
         except:
-          write_to_output('connection_testing_end', now())
-          write_to_output('connection_testing_status', 'failed', True)
-          # print(MAGENTA,"We're having some problems connecting with the proxy. Retrying with other proxy...",RESET)
+          print(MAGENTA,"We're having some problems connecting with the proxy. Retrying with other proxy...",RESET)
 
       if response.status_code == 200: ## OK
         ip_connected_to = json.loads(response.text)
-        write_to_output('connection_testing_end', now())
-        write_to_output('connection_testing_status', 'success')
         print(GREEN, f"Connected to proxy {ip_connected_to['origin']} 🛜", RESET)
         break
       else:
-        write_to_output('connection_testing_end', now())
-        write_to_output('connection_testing_status', 'failed', True)
-        # print(YELLOW, "Proxy unresponsive. Changing proxy...", RESET)
+        print(YELLOW, "Proxy unresponsive. Changing proxy...", RESET)
 
     if mode == 'selenium':
       socks.set_default_proxy()
@@ -114,7 +98,7 @@ elif version == 1:
           'proxy_url': f'{ip}:{port}',
           'socks_ver': 5
           }
-      if (protocol == 'socks4'):
+      elif (protocol == 'socks4'):
         return {
           'proxy_url': f'{ip}:{port}',
           'socks_ver': 4
@@ -138,7 +122,6 @@ elif version == 2:
       session = Session()
       session.proxies.update({'http': proxy_url})
       response = f"Connected to proxy {proxy_url.replace('http://','')} 🛜"
-      write_to_output('proxy_url', proxy_url)
       print(GREEN, response, RESET)
     elif mode == 'selenium':
       return {
@@ -153,5 +136,37 @@ elif version == 2:
 
 
 if __name__ == '__main__':
-  print(f"Version: {version}")
-  print( getNewIP('api') )
+  proxy_info = getNewIP('api')
+  
+  
+  # func to launch firefox
+  from selenium import webdriver
+  from selenium.webdriver.common.proxy import Proxy, ProxyType
+  from selenium.webdriver.firefox.options import Options
+  
+  # init firefox options and profile paths
+  options = Options()
+  # SSL allow settings
+  options.set_preference("network.websocket.allowInsecureFromHTTPS", True)
+  options.set_preference("dom.security.https_only_mode", False)
+  options.set_preference("security.fileuri.strict_origin_policy", False)
+  options.set_preference("security.csp.enable", True)
+
+  options.set_preference("browser.privatebrowsing.autostart", True)
+    
+  # get new proxy ip and port
+  proxy_info = getNewIP('selenium')
+  socks_ver, proxy_url = proxy_info['socks_ver'], proxy_info['proxy_url']
+  print(Fore.YELLOW, f"Configuring proxy {socks_ver} {proxy_url} to webdriver...", Style.RESET_ALL)
+  if socks_ver == 'http':
+    options.proxy = Proxy({ 'proxyType': ProxyType.MANUAL, 'httpProxy' : proxy_url})
+  elif (socks_ver == 5) or (socks_ver == 4):
+    options.proxy = Proxy({ 'proxyType': ProxyType.MANUAL, 'socksProxy' : proxy_url, 'socksVersion' : socks_ver})
+  
+  options.set_preference('webdriver_assume_untrusted_issuer', False)
+  options.set_preference("browser.download.manager.showWhenStarting", False)
+  options.set_preference("security.enterprise_roots.enabled", True)
+
+  # Navigate to a URL, resize window
+  driver = webdriver.Firefox(options=options)
+  driver.get(f"https://vocalremover.org/")
