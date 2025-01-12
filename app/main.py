@@ -8,8 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from colorama import Fore, Style
 
 from hf_token_api import main as hf_token_api
-from app.selenium_method.imagefx_selenium import mainprogram
-from app.toml_ingest import config_data
+from toml_ingest import config_data
 cf = config_data()
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
