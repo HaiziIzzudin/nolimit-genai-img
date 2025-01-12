@@ -31,6 +31,8 @@ def img_pp(old_filepath_url:str, if_method_is_hftoken:bool=False):
   # newname_noext = uuid() # assign a random name
   newname_noext = datetime.now().strftime("FLUX_%Y%m%d_%H%M%S_%f") # assign a random name
 
+  os.mkdir(f"{pwd+slash}output") if not os.path.exists(f"{pwd+slash}output") else None
+  
   image.save(f"{pwd+slash}output{slash}{newname_noext}.jpg")
       
   # send2trash old webp image

@@ -8,6 +8,8 @@ from colorama import Fore, Style
 from PIL import Image
 from send2trash import send2trash
 from datetime import datetime
+import os
+import sys
 RESET = Style.RESET_ALL
 GREEN, YELLOW, RED, MAGENTA = Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.LIGHTMAGENTA_EX
 
@@ -39,6 +41,12 @@ def main(prompt:str):
 
   # Convert the image to JPG and save to a new location
   new_image_path = "output/" + datetime.now().strftime("FLUX_%Y%m%d_%H%M%S_%f") + ".jpg"
+  
+  # Create the output folder if it doesn't exist
+  pwd = os.getcwd()
+  slash = "\\" if sys.platform == "win32" else "/"
+  os.mkdir(f"{pwd+slash}output") if not os.path.exists(f"{pwd+slash}output") else None
+  
   image.convert("RGB").save(new_image_path, "JPEG")
   print(GREEN, "Image saved as:", new_image_path, RESET)
 
