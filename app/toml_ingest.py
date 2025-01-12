@@ -36,7 +36,7 @@ if sys.platform == "win32":       # why no trailing folder?
   config_dev = "config_dev.toml"  # bcos tests with uvicorn, need to cd to app folder first 
   config_file = "config.toml"     # (make sure config / config_dev file in app folder)
 else:
-  config_dev = "/code/app/config_dev.toml"
+  config_dev = "config_dev.toml"
   config_file = "/code/app/config.toml"
 
 if exists(config_dev): 
