@@ -34,7 +34,7 @@ def main(prompt:str):
   image_base64 = b64encode(response.content).decode('utf-8')
   img_pp(
     io.BytesIO(response.content),
-    if_method_is_hftoken=True
+    method_is_hftoken=True
   )
   return image_base64
 
