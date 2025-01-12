@@ -21,20 +21,25 @@ slash = "\\" if sys.platform == "win32" else "/"
 pwd = os.getcwd()
 
 
-def img_pp(old_filepath_url:str, if_method_is_hftoken:bool=False):
+def img_pp(old_filepath_url:str, method_is_hftoken:bool=False):
   
   # convert image to jpg
-  if if_method_is_hftoken == False:  sleep(3) # if uses file download method, no direct data stream
+  if method_is_hftoken == False:  sleep(3) # if uses file download method, no direct data stream
   image = Image.open(old_filepath_url)
   image = image.convert('RGB')
 
   # newname_noext = uuid() # assign a random name
   newname_noext = datetime.now().strftime("FLUX_%Y%m%d_%H%M%S_%f") # assign a random name
 
-  os.mkdir(f"{pwd+slash}output") if not os.path.exists(f"{pwd+slash}output") else None
   
-  image.save(f"{pwd+slash}output{slash}{newname_noext}.jpg")
+  if "TERMUX_VERSION" in os.environ:
+    output_folder = f"{os.path.basename("~")+ slash + "storage" + slash + "downloads" + slash}output"
+  elif (sys.platform == "win32") or (sys.platform == "linux"):
+    output_folder = f"{pwd + slash}output"
+  
+  os.mkdir(output_folder) if not os.path.exists(output_folder) else None
+  image.save(f"{output_folder+slash}{newname_noext}.jpg")
       
   # send2trash old webp image
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
-  if if_method_is_hftoken == False:  send2trash( old_filepath_url )
+  if method_is_hftoken == False:  send2trash( old_filepath_url )
