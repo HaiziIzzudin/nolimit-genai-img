@@ -22,8 +22,8 @@ def main(prompt:str):
     json = {
     "inputs": prompt,
     "parameters": {
-      "width": 1536,
-      "height": 2048, # portrait
+      "width": 768,
+      "height": 1024, # portrait
       "seed": randint(0, 2_147_483_647)
     },
     "options": {
@@ -40,5 +40,5 @@ def main(prompt:str):
 
 
 if __name__ == "__main__":
-  prompt = "A beautiful landscape painting of a sunset over a mountain range."
+  prompt = input("Input prompt: ")
   main(prompt)

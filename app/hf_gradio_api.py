@@ -25,8 +25,8 @@ def main(prompt:str):
     prompt=prompt,
     seed=0,
     randomize_seed=True,
-    width=1536,
-    height=2048,
+    width=768,
+    height=1024,
     guidance_scale=3.5,
     num_inference_steps=18,
     api_name="/infer"
@@ -50,5 +50,5 @@ def main(prompt:str):
 
 
 if __name__ == "__main__":
-  prompt = "A beautiful landscape painting of a sunset over a mountain range."
+  prompt = input("Input prompt: ")
   main(prompt)

@@ -36,33 +36,3 @@ def img_pp(old_filepath_url:str, if_method_is_hftoken:bool=False):
   # send2trash old webp image
   # cannot remove folder!!! imagine send2trash downloads folder (duh) 
   if if_method_is_hftoken == False:  send2trash( old_filepath_url )
-
-
-
-
-
-
-
-def main():
-  import tomli
-  from time import sleep
-  from filesIngest import filesIngest
-
-  rr = filesIngest()
-  rr.select_files('images') ## IMAGES or VIDEOS valid
-  
-  for file in rr.getFileList():
-    # giving a name
-    img_pp(
-      file,
-      )
-    sleep(1)
-  
-  # invoke opening folder if true
-  open_folder(f"{pwd+slash}output")
-
-
-
-# run this code if runned directly,
-# this will not run if this script is imported as module
-if __name__ == "__main__":  main()
