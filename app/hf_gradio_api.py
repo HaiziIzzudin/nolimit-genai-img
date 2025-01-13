@@ -44,10 +44,11 @@ def main(prompt:str):
     api_name="/run_lora"
   )
   
-  # print(result)
+  print(result)
 
   # Load the image from the result path
   image_path = result[0]
+  print(MAGENTA, "Image path: ", image_path, RESET)
   image = Image.open(image_path)
 
   # Convert the image to JPG and save to a new location
