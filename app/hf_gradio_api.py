@@ -22,17 +22,28 @@ def main(prompt:str):
   print(MAGENTA, "HF_Token:", token, RESET)
 
   # main command
-  client = Client(src="black-forest-labs/FLUX.1-dev", ssl_verify=False, hf_token=token)
+  # client = Client(src="black-forest-labs/FLUX.1-dev", ssl_verify=False, hf_token=token)
+  # result = client.predict(
+  #   prompt=prompt,
+  #   seed=0,
+  #   randomize_seed=True,
+  #   width=768,
+  #   height=1024,
+  #   guidance_scale=3.5,
+  #   num_inference_steps=18,
+  #   api_name="/infer"
+  # )
+
+  client = Client("DamarJati/FLUX.1-RealismLora", ssl_verify=False, hf_token=token)
   result = client.predict(
     prompt=prompt,
-    seed=0,
+    steps=20,
     randomize_seed=True,
     width=768,
     height=1024,
-    guidance_scale=3.5,
-    num_inference_steps=18,
-    api_name="/infer"
+    api_name="/run_lora"
   )
+  
   # print(result)
 
   # Load the image from the result path
