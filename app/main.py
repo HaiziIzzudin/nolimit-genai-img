@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from colorama import Fore, Style
 
 from hf_token_api import main as hf_token_api
+from hf_gradio_api import main as hf_gradio_api
 from toml_ingest import config_data
 cf = config_data()
 RESET = Style.RESET_ALL
@@ -44,6 +45,36 @@ async def generate(prompt_request: PromptRequest):
   
   # data = hf_api_fastapi(prompt)
   task1 = asyncio.to_thread(hf_token_api, prompt) # which token is determined inside hf_token_api
+  data1 = await asyncio.gather(task1) # return base64 data
+
+  image_base64:list[str] = [data1]
+  total = len(image_base64)
+  print(MAGENTA,"total:",total,RESET)
+  
+  return Response(
+    content=json.dumps(
+      {
+        "image_base64": image_base64,  # you already returned base64 list
+        "total": total
+      }), 
+    headers={
+      "Access-Control-Allow-Origin": "https://imagen.ai.iziizz.com, https://iziizz-tasker.x10.mx/imagen-ai",
+      "Access-Control-Allow-Methods": "POST",
+      "Access-Control-Allow-Headers": "Content-Type",
+    }, 
+    media_type="application/json", 
+  )
+
+
+
+@app.post("/flux-realism-generate")
+async def generate(prompt_request: PromptRequest):
+  
+  prompt = prompt_request.prompt
+  print(MAGENTA,"Prompt:",prompt,RESET)
+  
+  # data = hf_api_fastapi(prompt)
+  task1 = asyncio.to_thread(hf_gradio_api, prompt) # which token is determined inside hf_token_api
   data1 = await asyncio.gather(task1) # return base64 data
 
   image_base64:list[str] = [data1]
