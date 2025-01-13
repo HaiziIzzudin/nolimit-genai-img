@@ -33,7 +33,7 @@ def img_pp(old_filepath_url:str, method_is_hftoken:bool=False):
 
   
   if "TERMUX_VERSION" in os.environ:
-    output_folder = f"{os.path.expanduser("~")+ slash + "storage" + slash + "downloads" + slash}output"
+    output_folder = f"{os.path.expanduser('~')+ slash + 'storage' + slash + 'downloads' + slash}output"
   elif (sys.platform == "win32") or (sys.platform == "linux"):
     output_folder = f"{pwd + slash}output"
   
