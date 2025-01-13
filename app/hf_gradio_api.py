@@ -1,4 +1,5 @@
 from random import randint
+from base64 import b64encode
 from toml_ingest import config_data
 cf = config_data()
 from gradio_client import Client
@@ -67,7 +68,8 @@ def main(prompt:str):
 
   # Convert the converted jpg image to base64
   with open(new_image_path, "rb") as image_file:
-    image_base64 = image_file.read().encode("base64")
+    image_base64 = image_file.read()
+    image_base64 = b64encode(image_base64).decode("utf-8")
 
   return image_base64
 
