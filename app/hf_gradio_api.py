@@ -65,6 +65,12 @@ def main(prompt:str):
   # Delete the image from the result path
   send2trash(image_path)
 
+  # Convert the converted jpg image to base64
+  with open(new_image_path, "rb") as image_file:
+    image_base64 = image_file.read().encode("base64")
+
+  return image_base64
+
 
 
 
