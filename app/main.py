@@ -55,7 +55,6 @@ async def generate(prompt_request: PromptRequest):
     content=json.dumps(
       {
         "image_base64": image_base64,  # you already returned base64 list
-        "total": total
       }), 
     headers={
       "Access-Control-Allow-Origin": "https://imagen.ai.iziizz.com, https://iziizz-tasker.x10.mx/imagen-ai",
@@ -85,7 +84,6 @@ async def generate(prompt_request: PromptRequest):
     content=json.dumps(
       {
         "image_base64": image_base64,  # you already returned base64 list
-        "total": total
       }), 
     headers={
       "Access-Control-Allow-Origin": "https://imagen.ai.iziizz.com, https://iziizz-tasker.x10.mx/imagen-ai",
