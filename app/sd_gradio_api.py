@@ -41,21 +41,30 @@ def main(prompt:str):
   image = Image.open(image_path)
 
   # Convert the image to JPG and save to a new location
-  new_image_path = "output/" + datetime.now().strftime("FLUX_%Y%m%d_%H%M%S_%f") + ".jpg"
+  new_filename = "output/" + datetime.now().strftime("FLUX_%Y%m%d_%H%M%S_%f") + ".jpg"
   
-  # Create the output folder if it doesn't exist
+  # pwd and slash logic
   pwd = os.getcwd()
   slash = "\\" if sys.platform == "win32" else "/"
-  os.mkdir(f"{pwd+slash}output") if not os.path.exists(f"{pwd+slash}output") else None
   
-  image.convert("RGB").save(new_image_path, "JPEG")
-  print(GREEN, "Image saved as:", new_image_path, RESET)
+  # determine the output folder
+  if "TERMUX_VERSION" in os.environ:
+    output_folder = f"{os.path.expanduser('~')+ slash + 'storage' + slash + 'downloads' + slash}output"
+  elif (sys.platform == "win32") or (sys.platform == "linux"):
+    output_folder = f"{pwd + slash}output"
+  
+  # make the output folder if it doesn't exist
+  os.mkdir(output_folder) if not os.path.exists(output_folder) else None
+  
+  # Save the image
+  image.convert("RGB").save(f"{output_folder+slash}{new_filename}")
+  print(GREEN, "Image saved as:", new_filename, RESET)
 
   # Delete the image from the result path
   send2trash(image_path)
 
   # Convert the converted jpg image to base64
-  with open(new_image_path, "rb") as image_file:
+  with open(f"{output_folder+slash}{new_filename}", "rb") as image_file:
     image_base64 = image_file.read()
     image_base64 = b64encode(image_base64).decode("utf-8")
 
