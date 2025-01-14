@@ -41,7 +41,7 @@ def main(prompt:str):
   image = Image.open(image_path)
 
   # Convert the image to JPG and save to a new location
-  new_filename = "output/" + datetime.now().strftime("FLUX_%Y%m%d_%H%M%S_%f") + ".jpg"
+  new_filename = datetime.now().strftime("FLUX_%Y%m%d_%H%M%S_%f") + ".jpg"
   
   # pwd and slash logic
   pwd = os.getcwd()
